@@ -72,15 +72,47 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @trustdall271                                    |
 
 
-| Preiódicos de Sátira (No fiable, Nº = 10) |
-|-------------------------------------------|
-| @elmundotoday                             |
-| @eljueves                                 |
-| @okdiario                                 |
-| @LaVozdelBecario                          |
-| @HayNoticia                               |
-| @FrayJosepho                              |
-| @ChiguireBipolar                          |
-| @actualidadpanam                          |
-| @revisbarcelona                           |
-| @thecliniccl                              |
+| Preiódicos de Sátira (No fiable, Nº = 9) |
+|------------------------------------------|
+| @elmundotoday                            |
+| @eljueves                                |
+| @LaVozdelBecario                         |
+| @HayNoticia                              |
+| @FrayJosepho                             |
+| @ChiguireBipolar                         |
+| @actualidadpanam                         |
+| @revisbarcelona                          |
+| @thecliniccl                             |
+
+| Bases periodísticas Dudosas o Precipitadas de interés (N = 10) |
+|----------------------------------------------------------------|
+| @tiramillas                                                    |
+| @20m                                                           |
+| @okdiario                                                      |
+| @ActualidadRT                                                  |
+| @ldpsincomplejos                                               |
+| @hermanntertsch                                                |
+| @NiusDiario                                                    |
+| @LaVozIberica                                                  |
+| @periodistadigit                                               |
+| @CancerIntegral                                                |
+
+| Traducción NO OFICIAL de Donald Trump (Cuestionable, Nº = 1) |
+|------------------------------------------------------|
+| @POTUS_Trump_ESP                                     |
+
+
+
+| Organizaciones institucionales (Fiables, Nº = 10) |
+|---------------------------------------------------|
+| @SaludPublicaEs                                   |
+| @sanidadgob                                       |
+| @andaluciadatos                                   |
+| @opsoms                                           |
+| @WHO                                              |
+| @AEMPSGOB                                         |
+| @FDAenEspanol                                     |
+| @CDCespanol                                       |
+| @policia                                          |
+| @guardiacivil                                     |
+
