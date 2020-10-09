@@ -84,7 +84,7 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @revisbarcelona                          |
 | @thecliniccl                             |
 
-| Bases periodísticas Dudosas o Precipitadas de interés (N = 10) |
+| Bases periodísticas Dudosas o Precipitadas de interés (Cuestionable, N = 10) |
 |----------------------------------------------------------------|
 | @tiramillas                                                    |
 | @20m                                                           |
