@@ -2,7 +2,7 @@
 Álvaro Huertas García
 
 ## **Información del repositorio** 
-Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
+Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags (total 113) de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
 
 Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o hastags. 
 
@@ -116,3 +116,42 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @policia                                          |
 | @guardiacivil                                     |
 
+
+| Verificadores acreditados por Poynter (Fiable, Nº = 10) |
+|---------------------------------------------------------|
+| @malditobulo                                            |
+| @maldita_ciencia                                        |
+| @EFEVerifica                                            |
+| @Chequeado                                              |
+| @Newtral                                                |
+| @FullFact                                               |
+| @ElSabuesoAP                                            |
+| @cotejoinfo                                             |
+| @ECUADORCHEQUEA                                         |
+| @lasillavacia                                           |
+
+| Bases periodísticas Latino América (Nº = 5) |
+|---------------------------------------------|
+| @JustiaLatinAmer                            |
+| @14ymedio                                   |
+| @ReutersLatam                               |
+| @UniNoticias                                |
+| @Pajaropolitico                             |
+
+| Bases periodísticas España (Nº = 8) |
+|-------------------------------------|
+| @el_pais                            |
+| @eldiarioes                         |
+| @elmundoes                          |
+| @EFEnoticias                        |
+| @abc_es                             |
+| @bbcmundo                           |
+| @telediario_tve                     |
+| @24h_tve                            |
+
+| Bases periodísticas sobre medicina (Nº = 4) |
+|---------------------------------------------|
+| @diariomedico                               |
+| @Consalud_es                                |
+| @redaccionmedica                            |
+| @VaccineSafetyN                             |
