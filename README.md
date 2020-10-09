@@ -8,7 +8,7 @@ Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o
 
 Las cuentas y hastags empleados en la extracción de tweets se muestran a continuación:
 
-| Hastags        |
+| Hastags  (Nº = 9)      |
 |----------------|
 | #Plandemia     |
 | #yonomeconfino |
@@ -19,3 +19,54 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | #VirusChino    |
 | #VacunaRusa    |
 | #PCRFraude     |
+
+
+| Usuarios no institucionales (No fiable, Nº = 47) |
+|--------------------------------------------------|
+| @No__Plandemia                                   |
+| @ANTIMASCARILLA                                  |
+| @FoxMuld88326271                                 |
+| @PericoAFuego                                    |
+| @DiegoMo53772865                                 |
+| @the_raven77                                     |
+| @LRsecreta                                       |
+| @JL_MDesconocido                                 |
+| @AtraviesaLoDesc                                 |
+| @HomeopatiaY                                     |
+| @NaturopatasCol                                  |
+| @MiHerbolario                                    |
+| @HerbolarioLola                                  |
+| @PacienteL                                       |
+| @elphabaz                                        |
+| @IsTortugo                                       |
+| @tecn_preocupado                                 |
+| @BabylonDab                                      |
+| @lamjort                                         |
+| @VaccineXchange                                  |
+| @gonzo_blogger                                   |
+| @CarmCerb21                                      |
+| @panguerrera1                                    |
+| @AlbaGar74381296                                 |
+| @MediterraneoDGT                                 |
+| @JosPastr                                        |
+| @velardedaoiz2                                   |
+| @JordiFlynn                                      |
+| @mitokondriac                                    |
+| @AquAhora1                                       |
+| @patrilaselma                                    |
+| @doctor_papaya                                   |
+| @Autnomacabread1                                 |
+| @LaRetuerka                                      |
+| @DathosBD                                        |
+| @PorunChileDigno                                 |
+| @1333Despierta                                   |
+| @NoHayPandemia__                                 |
+| @Musicolorista                                   |
+| @ELMINIMALISTA1                                  |
+| @Africamar                                       |
+| @informate_infor                                 |
+| @ElTrompetista78                                 |
+| @Angelisimo2                                     |
+| @_nWorder                                        |
+| @papayaykware                                    |
+| @trustdall271                                    |
