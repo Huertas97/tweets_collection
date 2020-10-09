@@ -70,3 +70,17 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @_nWorder                                        |
 | @papayaykware                                    |
 | @trustdall271                                    |
+
+
+| Preiódicos de Sátira (No fiable, Nº = 10) |
+|-------------------------------------------|
+| @elmundotoday                             |
+| @eljueves                                 |
+| @okdiario                                 |
+| @LaVozdelBecario                          |
+| @HayNoticia                               |
+| @FrayJosepho                              |
+| @ChiguireBipolar                          |
+| @actualidadpanam                          |
+| @revisbarcelona                           |
+| @thecliniccl                              |
