@@ -1,7 +1,7 @@
 # **Autor** 
 Álvaro Huertas García
 
-##TODO
+## TODO
 * Permitir que introduzca el usuario de git en el .py
 
 # Instrucciones para extraer los tweets
