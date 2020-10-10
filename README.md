@@ -33,15 +33,20 @@ Uso:
 ```
     python Tweet_wrapper_v2.py [options]
     Options:
-            -t, --today              Recogemos los tweets de la fecha actual.
-            -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
-            -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag
+             -t, --today              Recogemos los tweets de la fecha actual.
+             -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
+             -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag    
+             --git_token              Token necesario para poder acceder al repositorio de Github
+             --git_repo               Dirección del repositorio donde se desea guardar los archivos json con los tweets
+             --tweets_source_info     Información sobre las cuentas de Twitter sobre las que se buscarán Tweets
+             --git_autor              Autor de los cambios realizados en el repositorio de Github
+             --git_autor_email        E-mail del autor de los cambios realizados en el repositorio de Github
 ```
     
 Ejemplo. 
 Cogemos hasta 100 tweets con la fecha del día de hoy:
 
-    $python Tweet_wrapper_v2_v2.py -t -c 100
+    $python Tweet_wrapper_v2_v2.py -t -c 100  --git_token XXX --git_repo Huertas97/tweets_collection
 
 # **Información del repositorio** 
 Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags (total 113) de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
