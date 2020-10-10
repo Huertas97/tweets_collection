@@ -1,6 +1,37 @@
 ## **Autor** 
 Álvaro Huertas García
 
+# Instrucciones para extraer los tweets
+El primer paso es clonar el repositorio en la carpeta personal de interés:
+
+`$ git clone https://github.com/Huertas97/tweets_collection.git`
+
+O descargar tan sólo el archivo Tweet_wrapper_v2.py si se desea sólo extraer tweets. Las cuentas de las que se extraen los tweets pueden ser modificadas en este código. 
+Una vez descargado, si se intenta emplear el programa lo más probable es que no funcione dado que se requieren una serie de librerías específicas. El programa notifica cuales son estas librerías. No obstante, por aclaración se muestran a continuación:
+
+```
+!pip install -U -q tweepy
+!pip install -U -q emoji
+!pip install -U PyGithub
+!pip install -U -q tqdm
+```
+
+Igualemente, se puede acceder a la ayuda del programa con el comando:
+`$ python Tweet_wrapper_v2.py --help`
+
+El programa requiere
+Uso: 
+```
+    python Tweet_wrapper_v2.py [options]
+    Options:
+            -t, --today              Recogemos los tweets de la fecha actual.
+            -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
+            -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag
+```
+    
+Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
+    `python Tweet_wrapper_v2_v2.py -t -c 100`
+
 ## **Información del repositorio** 
 Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags (total 113) de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
 
@@ -183,33 +214,4 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @redaccionmedica                            |
 | @VaccineSafetyN                             |
 
-# Instrucciones para extraer los tweets
-El primer paso es clonar el repositorio en la carpeta personal de interés:
 
-`$ git clone https://github.com/Huertas97/tweets_collection.git`
-
-O descargar tan sólo el archivo Tweet_wrapper_v2.py si se desea sólo extraer tweets. Las cuentas de las que se extraen los tweets pueden ser modificadas en este código. 
-Una vez descargado, si se intenta emplear el programa lo más probable es que no funcione dado que se requieren una serie de librerías específicas. El programa notifica cuales son estas librerías. No obstante, por aclaración se muestran a continuación:
-
-```
-!pip install -U -q tweepy
-!pip install -U -q emoji
-!pip install -U PyGithub
-!pip install -U -q tqdm
-```
-
-Igualemente, se puede acceder a la ayuda del programa con el comando:
-`$ python Tweet_wrapper_v2.py --help`
-
-El programa requiere
-Uso: 
-    ```
-    python Tweet_wrapper_v2.py [options]
-    Options:
-            -t, --today              Recogemos los tweets de la fecha actual.
-            -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
-            -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag
-    ```
-    
-Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
-    `python Tweet_wrapper_v2_v2.py -t -c 100`
