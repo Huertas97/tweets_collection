@@ -3,7 +3,7 @@
 
 # Índice
  
- * [TODO](## todo)
+ * [TODO](##todo)
 
 ## TODO
 * Permitir que introduzca el usuario de git en el .py
