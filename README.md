@@ -70,6 +70,8 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | @_nWorder                                        |
 | @papayaykware                                    |
 | @trustdall271                                    |
+|     @elentirvigo                                 |
+|    @ProgreAzote                                  |
 
 
 | Preiódicos de Sátira (No fiable, Nº = 9) |
@@ -119,35 +121,51 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 
 | Verificadores acreditados por Poynter (Fiable, Nº = 10) |
 |---------------------------------------------------------|
-| @malditobulo                                            |
-| @maldita_ciencia                                        |
-| @EFEVerifica                                            |
-| @Chequeado                                              |
-| @Newtral                                                |
-| @FullFact                                               |
-| @ElSabuesoAP                                            |
-| @cotejoinfo                                             |
-| @ECUADORCHEQUEA                                         |
-| @lasillavacia                                           |
+| @malditobulo  (España)                                          |
+| @maldita_ciencia  (España)                                   |
+| @EFEVerifica  (España)                                           |
+| @Chequeado (Argentina)                                             |
+| @Newtral (España)                                        |
+| @FullFact (UK)                                               |
+| @ElSabuesoAP (México)                                           |
+| @cotejoinfo (Venezuela)                                            |
+| @ECUADORCHEQUEA (Ecuador)                                        |
+| @lasillavacia (Colombia)                                          |
 
-| Bases periodísticas Latino América (Nº = 5) |
-|---------------------------------------------|
-| @JustiaLatinAmer                            |
-| @14ymedio                                   |
-| @ReutersLatam                               |
-| @UniNoticias                                |
-| @Pajaropolitico                             |
+| Bases periodísticas sobre medicina (Nº = 17) |
+|----------------------------------------------|
+| @JustiaLatinAmer                             |
+| @ReutersLatam                                |
+| @UniNoticias                                 |
+| @14ymedio(Cuba)                              |
+| @prensa_libre (Guatemala)                    |
+| @ABCDigital (Paraguay)                       |
+| @ObservadorUY (Uruguay)                      |
+| @Milenio (México)                            |
+| @ElMercurio_cl (Chile)                       |
+| @elcomerciocom (Ecuador)                     |
+| @ElMundoBolivia (Bolivia)                    |
+| @laprensa (Nicaragua)                        |
+| @elespectador (Colombia)                     |
+| @Pajaropolitico                              |
+| @elcomerciodigit (Perú, The Trust Project)   |
+| @LANACION (Argetina, The Trust Project)      |
+| @ElUniversal (Venezuela, The Trust Project)  |
 
-| Bases periodísticas España (Nº = 8) |
+| Bases periodísticas España (Nº = 7) |
 |-------------------------------------|
 | @el_pais                            |
 | @eldiarioes                         |
 | @elmundoes                          |
 | @EFEnoticias                        |
 | @abc_es                             |
-| @bbcmundo                           |
 | @telediario_tve                     |
 | @24h_tve                            |
+
+
+| Bases periodísticas internacionales (Nº = 1) |
+|-------------------------------------|
+| @bbcmundo                             |
 
 | Bases periodísticas sobre medicina (Nº = 4) |
 |---------------------------------------------|
