@@ -38,7 +38,9 @@ Uso:
             -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag
 ```
     
-Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
+Ejemplo. 
+Cogemos hasta 100 tweets con la fecha del día de hoy:
+
     `python Tweet_wrapper_v2_v2.py -t -c 100`
 
 # **Información del repositorio** 
