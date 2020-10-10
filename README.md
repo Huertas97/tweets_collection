@@ -48,6 +48,7 @@ Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hasta
 
 Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o hastags.  
 Los tweets extraídos se guardan en formato json. Las cuentas que no dispogan de tweets no cren ningún archivo json. La información en los ficheros json es:
+
         * nombre de la cuenta
         * identificador del tweet
         * texto completo (tanto de tweet como retweet)
