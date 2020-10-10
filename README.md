@@ -1,5 +1,8 @@
-## **Autor** 
+# **Autor** 
 Álvaro Huertas García
+
+##TODO
+* Permitir que introduzca el usuario de git en el .py
 
 # Instrucciones para extraer los tweets
 El primer paso es clonar el repositorio en la carpeta personal de interés:
