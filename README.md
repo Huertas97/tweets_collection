@@ -4,6 +4,8 @@
 # Índice
  
  * [TODO](##todo)
+ * [Instrucciones para extraer los tweets](#instrucciones-para-extraer-los-tweets)
+ * [Información del repositorio](#información-del-repositorio)
 
 ## TODO
 * Permitir que introduzca el usuario de git en el .py
