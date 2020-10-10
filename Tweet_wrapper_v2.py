@@ -99,7 +99,7 @@ Options:
     --git_autor_email        E-mail del autor de los cambios realizados en el repositorio de Github
 
 Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
-    python Tweet_wrapper_v2_v2.py -t -c 100""")
+    python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection""")
     sys.exit()
 
 def print_tweets_source_info():
