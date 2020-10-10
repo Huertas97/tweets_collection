@@ -48,14 +48,14 @@ Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hasta
 
 Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o hastags.  
 Los tweets extraídos se guardan en formato json. Las cuentas que no dispogan de tweets no cren ningún archivo json. La información en los ficheros json es:
-        - nombre de la cuenta
-        - identificador del tweet
-        - texto completo (tanto de tweet como retweet)
-        - información sobre si la cuenta está verificada
-        - fecha de creación del tweet
-        - localización del tweet
-        - url a la cuenta del usuario
-        - entidades del tweets (enlaces, hastags etc)
+        * nombre de la cuenta
+        * identificador del tweet
+        * texto completo (tanto de tweet como retweet)
+        * información sobre si la cuenta está verificada
+        * fecha de creación del tweet
+        * localización del tweet
+        * url a la cuenta del usuario
+        * entidades del tweets (enlaces, hastags etc)
 
 Las cuentas y hastags empleados en la extracción de tweets se muestran a continuación:
 
