@@ -7,8 +7,19 @@
  * [Instrucciones para extraer los tweets](#instrucciones-para-extraer-los-tweets)
  * [Información del repositorio](#información-del-repositorio)
 
+```mermaid
+graph LR
+A[Twitter UserName] --> B[Twitter API]
+B -- .json file --> D[Upload to Github]
+
+style A fill:#f5c542
+style B fill:#f5c542
+style D fill:#f5c542
+
+```
+
 ## TODO
-* Permitir que introduzca el usuario de git en el .py
+
 
 # Instrucciones para extraer los tweets
 El primer paso es clonar el repositorio en la carpeta personal de interés:
