@@ -46,6 +46,12 @@ parser.add_option('-t', '--today', action='store_true', help='Extraer tweets de 
 parser.add_option('-d', '--day', type='int',  help='Días hacia atrás desde la fecha actual para recoger tweets')
 parser.add_option('-c', '--count', type= 'int', help = 'Número de tweets a extraer por usaurio. Cuanto mayor más tiempo de ejecución')
 parser.add_option("--tweets_source_info", action = 'store_true', help = "Muestra los usuario s de twitter empleados en la búsqueda")
+parser.add_option("--git_token",  type= "str", help = "Token necesaria para acceder al repositorio de Github donde guardar los resultados")
+parser.add_option("--git_repo",  type = "str", help = "Repositorio donde se desea guardar el archivo json generado tras la extracción de tweets")
+parser.add_option("--git_autor",  type = "str", help = "Autor de los cambios realizados en el repositorio de Github")
+parser.add_option("--git_autor_email", type = "str", help = "E-mail deñ Autor de los cambios realizados en el repositorio de Github")
+
+
 (options, args) = parser.parse_args()
 
 def print_usage():
@@ -85,6 +91,12 @@ Uso:
 Options:
     -t, --today              Recogemos los tweets de la fecha actual.
     -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
+    -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag    
+    --git_token              Token necesario para poder acceder al repositorio de Github
+    --git_repo               Dirección del repositorio donde se desea guardar los archivos json con los tweets
+    --tweets_source_info     Información sobre las cuentas de Twitter sobre las que se buscarán Tweets
+    --git_autor              Autor de los cambios realizados en el repositorio de Github
+    --git_autor_email        E-mail del autor de los cambios realizados en el repositorio de Github
 
 Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
     python Tweet_wrapper_v2_v2.py -t -c 100""")
@@ -368,7 +380,7 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
         time.sleep(3)
 
 
-def push(path, message, content, branch = "main"):
+def push(path, message, content, author, author_mail, branch = "main"):
     """
     Función encargada de subir los archivos encontrados a Github.
 
@@ -389,8 +401,8 @@ def push(path, message, content, branch = "main"):
 
     """
     author = InputGitAuthor(
-        "Huertas97",
-        "ahuertasg01@gmail.com"
+        author,
+        author_mail
     )
     try:   # If file already exists, update it
         # Retrieve old file to get its SHA and path
@@ -444,9 +456,25 @@ api_secret_key = "Dz6jeUBUdGp43uJugObOgIqnVdCbUrbrkwkcjAibmlDQwq6sdL"
 access_token = "1311739853307027457-HqUEzNSGtzdFqkFDFmdYg5UcMEjPv2"
 access_token_secret = "iabmz6wZ0gucIodSNJ9TfSfnrT17yJXjDAu13y4QF8hLI"
 
-token = "5abffff913d755370753aa8684887aa07727922c"
-g = Github(token)
-repo = g.get_repo("Huertas97/tweets_collection")
+
+if options.git_token and options.git_repo:
+    g = Github(options.git_token)
+    repo = g.get_repo(options.git_repo)
+else:
+    print("\nImportante: Se requiere un repositorio de GitHub y un Token de acceso")
+    print_usage()
+    
+if options.git_autor:
+    autor = options.git_autor
+else:
+    autor = "Huertas97"
+
+if options.git_autor_email:
+    email = options.git_autor_email
+else:
+    email = "ahuertasg01@gmail.com"
+    
+
 
 
 
@@ -628,11 +656,11 @@ dic_user = {
 
 }
 
-# dic_user = {
+dic_user = {
     # Hastags
-    # "trustdall271": ["es", "-filter:replies AND from:"],
+     "velardedaoiz2": ["es", "-filter:replies AND from:"],
     
-    #}
+    }
 
 
 # today = datetime.date.today()
@@ -667,4 +695,5 @@ for key, value in tqdm(dic_user.items(), desc="Progess"):
         # Create path to reach the file to push
         path = "./tweets/"+str(date)+"/"+str(file_name)
         file_content = open(path, "r").read()
-        push(path = path, message = "Tweets from: " + str(date), content = file_content)
+        push(path = path, message = "Tweets from: " + str(date), content = file_content,
+             author = autor, author_mail = email)
