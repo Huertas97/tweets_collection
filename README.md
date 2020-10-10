@@ -1,6 +1,10 @@
 # **Autor** 
 Álvaro Huertas García
 
+# Índice
+ 
+ * [TODO](## todo)
+
 ## TODO
 * Permitir que introduzca el usuario de git en el .py
 
@@ -35,7 +39,7 @@ Uso:
 Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
     `python Tweet_wrapper_v2_v2.py -t -c 100`
 
-## **Información del repositorio** 
+# **Información del repositorio** 
 Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags (total 113) de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
 
 Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o hastags.  
