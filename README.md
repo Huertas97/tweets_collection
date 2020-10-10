@@ -1,3 +1,5 @@
+![GitHub language count](https://img.shields.io/github/languages/count/Huertas97/tweets_collection?style=plastic)
+
 # **Autor** 
 Álvaro Huertas García
 
