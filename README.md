@@ -21,7 +21,7 @@ Las cuentas y hastags empleados en la extracción de tweets se muestran a contin
 | #PCRFraude     |
 
 
-| Usuarios no institucionales (No fiable, Nº = 47) |
+| Usuarios no institucionales (No fiable, Nº = 49) |
 |--------------------------------------------------|
 | @No__Plandemia                                   |
 | @ANTIMASCARILLA                                  |
