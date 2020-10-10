@@ -73,6 +73,8 @@ Información:
         - texto completo (tanto de tweet como retweet)
         - información sobre si la cuenta está verificada
         - fecha de creación del tweet
+        - nº de veces que ha sido retweet
+        - nº de veces que ha sido marcado como favorito
         - localización del tweet
         - url a la cuenta del usuario
         - entidades del tweets (enlaces, hastags etc)
