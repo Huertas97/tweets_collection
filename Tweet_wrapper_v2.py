@@ -115,6 +115,18 @@ def print_tweets_source_info():
     #VirusChino
     #VacunaRusa
     #PCRFraude
+    #coronavirus
+    #covid
+    #vaccine
+    #pfizer
+    #moderna
+    #biontech
+    #notovaccine
+    #notonewnormal
+    #antivacunas
+    #VaccinesSaveLives
+    #BillGates
+    #ChinaVirus
     
     # No fiable
     @No__Plandemia
@@ -325,6 +337,7 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
                                result_type = result_type,
                                until = next_day.date()
                                ).items(count)
+        
         # Extraemos la información de cada tweet
         tweets_list = []
         for tweet in tweets:
@@ -371,6 +384,7 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
                                                            "entities"])
             # Procesamos los emojis a unicode
             tweets_df["text"] = tweets_df["text"].apply(emoji.demojize)
+            
             return tweets_df
         else:
             pass
@@ -510,6 +524,10 @@ dic_user = {
     "#VirusChino": ["es", "#", "mixed"],
     "#VacunaRusa": ["es", "#", "mixed"],
     "#PCRFraude": ["es", "#", "mixed"],
+    "#FactCHAT": ["en", "#", "mixed"],
+    "#FakePCR": ["es", "#", "mixed"],
+    # infodemia 
+    
     
     # No fiable
     "No__Plandemia": ["es", "from:"],
@@ -561,6 +579,7 @@ dic_user = {
     "trustdall271": ["es", "-filter:replies AND from:"],
     "elentirvigo": ["es", "-filter:replies AND from:"],
     "ProgreAzote": ["es", "-filter:replies AND from:"],
+    "The_Cling_On": ["en", "from:"], # Australia
     
     
     # No fiable satira
@@ -574,6 +593,9 @@ dic_user = {
     "actualidadpanam": ["es", "from:"],# Colombia
     "revisbarcelona": ["es", "from:"],# Argentina
     "thecliniccl": ["es", "from:"],# Chile
+    "TheBabylonBee": ["en", "from:"], # US 
+    "TheOnion": ["en", "from:"], # US 
+    
     
     
     # dudoso, precipitado
@@ -601,6 +623,21 @@ dic_user = {
     "CDCespanol": ["es", "from:"],
     "policia": ["es", "from:"],
     "guardiacivil": ["es", "from:"],
+    "US_FDA": ["en", "from:"],
+    "FDA_Drug_Info": ["en", "from:"],
+    "FDArecalls": ["en", "from:"],
+    "CDCgov": ["en", "from:"],
+    "NIH": ["en", "from:"],
+    "NEJM": ["en", "from:"],
+    "HopkinsMedicine": ["en", "from:"],
+    "MayoClinic": ["en", "from:"],
+    
+    # Revistas cientificas
+    "NatureComms": ["en", "from:"],
+    "researchnews": ["en", "from:"],
+    "CellPressNews": ["en", "from:"],
+    "TrendsMolecMed": ["en", "from:"],
+    "embojournal": ["en", "from:"],
     
     # Fiable, verificadores
     "malditobulo": ["es", "from:"], # España
@@ -613,6 +650,59 @@ dic_user = {
     "cotejoinfo": ["es", "from:"], # Venezuela
     "ECUADORCHEQUEA": ["es", "from:"], # Ecuador
     "lasillavacia": ["es", "from:"], # Colombia
+    "AP": ["en", "from:"], # US
+    "AfricaCheck": ["en", "from:"], # Africa
+    "aosfatos": ["pt", "from:"], # Brasil
+    "AAPNewswire": ["en", "from:"], # Australia
+    "boomlive_in": ["en", "from:"], # India
+    "correctiv_org": ["de", "from:"], # Alemania
+    "Check_Your_Fact": ["en", "from:"], # USA
+    "CheckCongo": ["fr", "from:"], # Congo
+    "DemagogPL": ["pl", "from:"], # Polonia
+    "dubawaNG": ["en", "from:"], # Nigeria
+    "estadaoverifica": ["pt", "from:"], # Brasil
+    "FactlyIndia": ["en", "from:"], # India
+    "FactCrescendo": ["en", "from:"], # India
+    "FactCheckNI": ["en", "from:"], # United Kingdom
+    "ghana_fact": ["en", "from:"], # Ghana
+    "Fatabyyano_com": ["ar", "from:"], # Jordania
+    "FerretScot": ["en", "from:"], # United Kingdom (Scotland)
+    "Observateurs": ["fr", "from:"], # Francia
+    "lemondefr": ["fr", "from:"], # Francia
+    "CheckNewsfr": ["fr", "from:"], # Australia
+    "LogicallyAI": ["en", "from:"], # United Kingdom
+    "MaharatNews": ["ar", "from:"], # Libano
+    "Poynter": ["en", "from:"], # Internacional
+    "mediawise": ["en", "from:"], # USA
+    "NewsMobileIndia": ["en", "from:"], # India
+    "NewsMeter_In": ["en", "from:"], # India
+    "observadorpt": ["pt", "from:"], # Portugal
+    "PesaCheck": ["en", "from:"], # Kenya
+    "JornalPoligrafo": ["pt", "from:"], # Portugal
+    "ABCFactCheck": ["en", "from:"], # Australia
+    "rapplerdotcom": ["en", "from:"], # Filipinas
+    "ReutersAgency": ["en", "from:"], # United States
+    "ClimateFdbk": ["en", "from:"], # France
+    "eye_digit": ["en", "from:"], # India
+    "SouthAsiaCheck": ["en", "from:"], # Nepal
+    "StopFakingNews": ["ru", "from:"], # Ucrania
+    "IndiaToday": ["en", "from:"], # India
+    "factchecknet": ["en", "from:"], # Internacional
+    "thedispatch": ["en", "from:"], # USA
+    "ThipMedia": ["en", "from:"], # India
+    "TheQuint": ["en", "from:"], # India
+    "GlennKesslerWP": ["en", "from:"], # chief writer of Washington Post's Fact Checker
+    "thejournal_ie": ["en", "from:"], # Ireland
+    "USATODAY": ["en", "from:"], # USA
+    "verafiles": ["en", "from:"], # Filipinas
+    "newsvishvas": ["en", "from:"], # India
+    "dpa": ["de", "from:"], # Alemania
+    "dogrulukpayicom": ["tr", "from:"], # Turquia
+    "PagellaPolitica": ["it", "from:"], # Italia
+    "teyitorg": ["tr", "from:"], # Turquia
+    "NUnl": ["nl", "from:"], # Holanda
+    "snopes": ["en", "from:"], # USA
+    "franceinfo": ["fr", "from:"], # France
     
     
     # Periodicos Latino América
@@ -636,6 +726,10 @@ dic_user = {
     "LANACION": ["es", "from:"], # The Trust Project Argetina
     "ElUniversal": ["es", "from:"], # The Trust Project Venezuela
     
+    # Periodicos US
+    "nytimes": ["en", "from:"], # US
+    "AmPress": ["en", "from:"], # US
+    
     # Periodicos España
     "el_pais": ["es", "from:"],
     "eldiarioes": ["es", "from:"],
@@ -658,8 +752,8 @@ dic_user = {
 
 dic_user = {
     # Hastags
-     "velardedaoiz2": ["es", "-filter:replies AND from:"],
-    
+     "US_FDA": ["en", "from:"]
+         
     }
 
 
@@ -684,16 +778,28 @@ for key, value in tqdm(dic_user.items(), desc="Progess"):
                               )
     # If a df is returned push it
     if isinstance(tweets_df, pd.DataFrame):
-        file_name = user_name+"-"+str(date)+".json"
+        local_file_name = user_name+"-"+str(date)+".json"
+        git_file_name = user_name+"-"+str(date)+".txt"
+        
         # Pandas df to json format
-        tweets_df.to_json(file_name)
+        tweets_df.to_json(local_file_name)
+        # Extract tweets_id and save it as txt
+        tweets_df["tweet_id"].to_csv(git_file_name, header=None, index=None, sep=' ', mode='w')
+        
         # create folders and move json file to that folder by date
-        # get_ipython().system('mkdir -p ./tweets/{today}/')
-        # get_ipython().system('mv {file_name} ./tweets/{today}/')
         subprocess.call(['mkdir',"-p", "./tweets/" + str(date)])
-        subprocess.call(['mv',  file_name,  './tweets/'+ str(date)])
+        subprocess.call(['mv',  git_file_name,  './tweets/'+ str(date)])
+        
+        subprocess.call(['mkdir',"-p", "../local_tweets/" + str(date)])
+        subprocess.call(['mv',  local_file_name,  '../local_tweets/'+ str(date)])
+        
+        
         # Create path to reach the file to push
-        path = "./tweets/"+str(date)+"/"+str(file_name)
+        path = os.path.join(".", "tweets", str(date), str(git_file_name)).replace("\\","/") 
+        
+        # GitHub will only receive tweets ids (Twitter Privacy Conditions)
+        # Extract the content to push
         file_content = open(path, "r").read()
         push(path = path, message = "Tweets from: " + str(date), content = file_content,
              author = autor, author_mail = email)
+    
