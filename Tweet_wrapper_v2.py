@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+"""
+Created on Sun Dec 20 18:40:33 2020
 
+This script allows the user to collects dehydrated and hydrated tweets from
+Twitter accounts.The default Twitter accounts were selected by hand. 
+Feel free for change the ones selected in this script. Tweets extractions is
+accomplish using Tweepy. More information in print_usage().
 
-
+@author: Álvaro Huertas García
+"""
 # !pip install -U -q tweepy
 # !pip install -U -q emoji
 # !pip install -U PyGithub
@@ -28,7 +35,7 @@ try:
     
 except ImportError as error:
     print(error)
-    print("""Se requieren los siguientes módulos:
+    print("""Requirements:
           -> tweepy             (pip install -U -q tweepy)
           -> emoji              (pip install -U -q emoji)
           -> github             (pip install -U -q PyGithub)
@@ -42,232 +49,86 @@ parser = OptionParser(add_help_option=False)
 
 # General options
 parser.add_option('-h', '--help', action='store_true', help='Show this help message and exit.')
-parser.add_option('-t', '--today', action='store_true', help='Extraer tweets de fecha actual')
-parser.add_option('-d', '--day', type='int',  help='Días hacia atrás desde la fecha actual para recoger tweets')
-parser.add_option('-c', '--count', type= 'int', help = 'Número de tweets a extraer por usaurio. Cuanto mayor más tiempo de ejecución')
-parser.add_option("--tweets_source_info", action = 'store_true', help = "Muestra los usuario s de twitter empleados en la búsqueda")
-parser.add_option("--git_token",  type= "str", help = "Token necesaria para acceder al repositorio de Github donde guardar los resultados")
-parser.add_option("--git_repo",  type = "str", help = "Repositorio donde se desea guardar el archivo json generado tras la extracción de tweets")
-parser.add_option("--git_autor",  type = "str", help = "Autor de los cambios realizados en el repositorio de Github")
-parser.add_option("--git_autor_email", type = "str", help = "E-mail deñ Autor de los cambios realizados en el repositorio de Github")
-
+parser.add_option('-t', '--today', action='store_true', help='Collect tweets from today')
+parser.add_option('-d', '--day', type='int',  help='Number of days to go back in time to collect tweets')
+parser.add_option('-c', '--count', type= 'int', help = 'Number of tweets collected per user. Directly related with computing time.')
+parser.add_option("--tweets_source_info", action = 'store_true', help = "Information. Show the Twitter accounts used for the tweets extraction")
+parser.add_option("--git_token",  type= "str", help = "Token needed to access the Github repository where the results will be saved")
+parser.add_option("--git_repo",  type = "str", help = "Repository where you want to save the json file generated after tweet extraction")
+parser.add_option("--git_autor",  type = "str", help = "GitHub changes author")
+parser.add_option("--git_autor_email", type = "str", help = "E-mail from the author")
+parser.add_option('--api_key', type='str', help='Consumer key')
+parser.add_option('--api_secret_key', type='str', help='Consumer secret key')
+parser.add_option('--access_token', type='str', help='Access token')
+parser.add_option('--access_token_secret', type='str', help='Secret access token')
 
 (options, args) = parser.parse_args()
 
 def print_usage():
     print("""
-Información:
-    Script que se encarga de extraer los tweets de diversas cuentas seleccionadas
-    previamente a mano. La extracción de tweets se realiza mediante tweepy. 
+Information:
+    This script allows the user to collects dehydrated and hydrated tweets from
+    Twitter accounts.The default Twitter accounts were selected by hand. 
+    Feel free for change the ones selected in this script. Tweets extractions is
+    accomplish using Tweepy. Hydrated tweets are saved locally. Dehydrated tweets
+    are the ones uploaded to GitHub. 
     
-    Es importante señalar que Twitter tiene unas "Rate limits". Entre ellas
-    sólo deja realizar 180 requests en una ventana de 15 minutos. Una vez
-    hayan pasado los 15 minutos después de la primera búsqueda, se vuelve a
-    disponer de 180 requests. Esta es la razón por la que la extracción de tweets
-    puede llevar algo de tiempo. No obstante, en el código se controla esta espera, 
-    permitiendo que una vez hayan pasado los 15 minutos, se reanude la extracción
-    de tweets.
+    Be aware of the "Rate Limits" from Twitter. Among these limits, the number of
+    tweet extraction requests is up to 450 in a temporal window of 15 minutes. 
+    Once the temporal windows ends, the number of requests are restarted.
+    Nevertheless, the code has been developed to manage and inform about these
+    temporal windows and to continue the tweets extraction. 
     
-    Señalar también que Twitter sólo deja extraer los tweets de hasta 7-daís 
-    de antigüedad. El código está preparado para extraer los tweets del día 
-    actual, del día anterior o un día disponible (más información abajo).
+    Morevoer, you should be aware that Twitter Policy only allows to extract 
+    tweets within the las 7 days (30 days for Premium API).  
 
-    Los tweets extraídos se guardan en formato json. Las cuentas que no dispogan
-    de tweets no cren ningún archivo json. La información en los ficheros json es:
-        - nombre de la cuenta
-        - identificador del tweet
-        - texto completo (tanto de tweet como retweet)
-        - información sobre si la cuenta está verificada
-        - fecha de creación del tweet
-        - nº de veces que ha sido retweet
-        - nº de veces que ha sido marcado como favorito
-        - localización del tweet
-        - url a la cuenta del usuario
-        - entidades del tweets (enlaces, hastags etc)
+    The tweets collected are saved as json files. The Twitter accounts without
+    tweets available for the date selected do not create json files. The information
+    saved in the json files are the following ones: 
+        - account name
+        - tweet id
+        - full text (both tweet and retweet)
+        - verification of the account
+        - tweet date creation
+        - nº of times retweeted
+        - favourites count
+        - tweet location (if available)
+        - account url 
+        - tweet entities (url, hastags, etc)
 
-Uso: 
+Usage: 
     python Tweet_wrapper_v2.py [options]
 
 Options:
-    -t, --today              Recogemos los tweets de la fecha actual.
-    -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
-    -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag    
-    --git_token              Token necesario para poder acceder al repositorio de Github
-    --git_repo               Dirección del repositorio donde se desea guardar los archivos json con los tweets
-    --tweets_source_info     Información sobre las cuentas de Twitter sobre las que se buscarán Tweets
-    --git_autor              Autor de los cambios realizados en el repositorio de Github
-    --git_autor_email        E-mail del autor de los cambios realizados en el repositorio de Github
+    -t, --today                  Collect tweets from today
+    -d, --day                    Number of days to go back in time to collect tweets. Ex: 1 = yesterday.
+    -c, --count                  Number of tweets collected per user. Directly related with computing time. Default: 200 
+    --git_token                  Token needed to access the Github repository where the results will be saved
+    --git_repo                   Repository where you want to save the json file generated after tweet extraction
+    --tweets_source_info         Information. Show the Twitter accounts used for the tweets extraction
+    --git_autor                  GitHub changes author
+    --git_autor_email            E-mail author
+    --api_key                    CONSUMER_KEY
+    --api_secret_key             CONSUMER_SECRET
+    --access_token               ACCESS TOKEN   
+    --access_token_secret        ACCESS TOKEN SECRET
+    
+Requirements:
+     -> tweepy             (pip install -U -q tweepy)
+     -> emoji              (pip install -U -q emoji)
+     -> github             (pip install -U -q PyGithub)
+     -> tqdm               (pip install -U -q tqdm)
+     -> requests_oauthlib  (pip install -U -q requests-oauthlib)
+     
+     Furthermore, you should have a GitHub account and a Twitter Developer API
+     credentials. 
 
-Ejemplo. Cogemos hasta 100 tweets con la fecha del día de hoy:
-    python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection""")
+Example. Collect up to 1000 tweets from today:
+    $ python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection \\
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX""")
     sys.exit()
 
-def print_tweets_source_info():
-    print("""Las cuentas de Twitter de las que extraemos los tweets son:
-    
-    Hastags
-    #Plandemia
-    #yonomeconfino
-    #coronatimo
-    #YoNoMeVacuno
-    #covid1984
-    #NoalaVacuna
-    #VirusChino
-    #VacunaRusa
-    #PCRFraude
-    #coronavirus
-    #covid
-    #vaccine
-    #pfizer
-    #moderna
-    #biontech
-    #notovaccine
-    #notonewnormal
-    #antivacunas
-    #VaccinesSaveLives
-    #BillGates
-    #ChinaVirus
-    
-    # No fiable
-    @No__Plandemia
-    @ANTIMASCARILLA
-    @FoxMuld88326271
-    @PericoAFuego
-    @DiegoMo53772865
-    @the_raven77
-    @LRsecreta
-    @JL_MDesconocido
-    @AtraviesaLoDesc
-    @HomeopatiaY
-    @NaturopatasCol
-    @MiHerbolario
-    @HerbolarioLola
-    @PacienteL
-    @elphabaz
-    @IsTortugo
-    @tecn_preocupado
-    @BabylonDab
-    @lamjort
-    @VaccineXchange
-    @gonzo_blogger
-    @CarmCerb21
-    @panguerrera1
-    @AlbaGar74381296
-    @MediterraneoDGT
-    @JosPastr
-    @velardedaoiz2
-    @JordiFlynn
-    @mitokondriac
-    @AquAhora1
-    @patrilaselma
-    @doctor_papaya
-    @Autnomacabread1
-    @LaRetuerka
-    @DathosBD
-    @PorunChileDigno
-    @1333Despierta
-    @NoHayPandemia__
-    @Musicolorista
-    @ELMINIMALISTA1
-    @Africamar
-    @informate_infor
-    @ElTrompetista78
-    @Angelisimo2
-    @_nWorder
-    @papayaykware
-    @trustdall271
-    @elentirvigo
-    @ProgreAzote
-    
-    
-    # No fiable satira
-    @elmundotoday
-    @eljueves
-    @LaVozdelBecario
-    @HayNoticia
-    @FrayJosepho
-    @ChiguireBipolar
-    @actualidadpanam
-    @revisbarcelona
-    @thecliniccl
-    
-    
-    # dudoso, precipitado
-    @tiramillas
-    @20m
-    @okdiario
-    @ActualidadRT
-    @ldpsincomplejos
-    @hermanntertsch
-    @NiusDiario
-    @LaVozIberica
-    @periodistadigit
-    @CancerIntegral
-    
-    # Dudoso porque es traducción de Donald Trump
-    @POTUS_Trump_ESP
 
-    # Fiable, organizaciones
-    @SaludPublicaEs
-    @sanidadgob
-    @andaluciadatos
-    @opsoms
-    @WHO
-    @AEMPSGOB
-    @FDAenEspanol
-    @CDCespanol
-    @policia
-    @guardiacivil
-    
-    # Fiable, verificadores
-    @malditobulo
-    @maldita_ciencia
-    @EFEVerifica
-    @Chequeado
-    @Newtral
-    @FullFact
-    @ElSabuesoAP
-    @cotejoinfo
-    @ECUADORCHEQUEA
-    @lasillavacia
-    
-    
-    # Periodicos Latino América
-    @JustiaLatinAmer
-    @14ymedio
-    @ReutersLatam
-    @UniNoticias
-    @Pajaropolitico
-    @elcomerciodigit
-    @prensa_libre
-    @ABCDigital
-    @ObservadorUY
-    @Milenio
-    @ElMercurio_cl
-    @elcomerciocom
-    @ElMundoBolivia
-    @laprensa
-    @elespectador
-    
-    # Periodicos España
-    @el_pais
-    @eldiarioes
-    @elmundoes
-    @EFEnoticias
-    @abc_es
-    @telediario_tve
-    @24h_tve
-    
-    # Periodicos Internacionales
-    @bbcmundo
-    
-    # Periodicos médicos
-    @diariomedico
-    @Consalud_es
-    @redaccionmedica
-    @VaccineSafetyN
-       """)
-    sys.exit()
 
 def process_time(api):
     """
@@ -294,31 +155,31 @@ def process_time(api):
 
 def tweet_collect(user_name, text_query, since_date,  count, language, result_type):
     """
-    Función encargada de hacer la request a Twitter de un usuario y recoger sus
+    Function in charge of making the request to Twitter of a user and collect his
     tweets.
 
     Parameters
     ----------
     user_name : string
-        Nombre de la cuenta de Twitter
+        Twitter account name
     text_query : string
         Filtros que aplicar a la búsqueda. Ej. "from: Usuario" solo busca en
         ese usuario
     since_date: datetime
-        Fecha desde la cual se extraen tweets (desde esa fecha incluída hacia
-        adelante)
+        Filters to apply to the search. E.g. "from: User" only searches in
+        that user
     count : int, optional
-        Número de tweets que queremos extraer. The default is 200
+        Nº of tweets to extract. The default is 200
     language : string, optional
-        Filtro de lenguaje del tweet. The default is "es".
+        Language filter. The default is "es".
 
     Returns
     -------
     tweets_df : pandas data frame
-        Data Frame que contiene tweets en las filas y en las columnas: el id,
-        el texto completo, la verificación de la cuenta, la fecha de creación,
-        la localización el url de la cuenta y las entidades de cada tweet
-        extraído.
+        Data Frame containing tweets in the rows and columns: the id,
+        the full text, account verification, creation date,
+        the location of the account url and the entities of each tweet
+        extracted.
 
     """
     
@@ -326,7 +187,7 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
     
 
     
-    print("\nExtrayendo tweets de {0}, con la fecha: {1}".format(user_name, since_date.date()))
+    print("\nCollecting tweets from user {0}, date: {1}".format(user_name, since_date.date()))
     next_day = since_date  + datetime.timedelta(1)
     try:
         # Creation of query method using parameters
@@ -338,11 +199,11 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
                                until = next_day.date()
                                ).items(count)
         
-        # Extraemos la información de cada tweet
+        # Teets info extraction
         tweets_list = []
         for tweet in tweets:
             if  since_date.date() == tweet.created_at.date():
-                # Cojo todo el texto. Adaptado ha si es RT o tweet propio
+                # Fulltext (both retweet or tweet)
                 if 'retweeted_status' in tweet._json:
                     is_retweet = True
                     full_text = tweet._json['retweeted_status']['full_text']
@@ -357,16 +218,16 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
                                         str(tweet.created_at),
                                         tweet.retweet_count, 
                                         tweet.favorite_count,
-                                      #  tweet.reply_count, 
-                                       # tweet.retweeted_status,
+                                        #  tweet.reply_count, 
+                                        # tweet.retweeted_status,
                                         tweet.user.location,
                                         tweet.user.url,
                                         tweet.entities
                                         ])
-        # Mostramos el nº de request y ventana temporal disponible en la API
+        # We show the request number and available time window from the API
         process_time(api)
-        # Creamos data frame
-        print("Número de tweets extraídos:", len(tweets_list))
+        # Data frame creation
+        print("Number of tweets collected:", len(tweets_list))
         if len(tweets_list) != 0:
             # Creation of dataframe from tweets list
             tweets_df = pd.DataFrame(tweets_list, columns=["screen_name",
@@ -396,18 +257,18 @@ def tweet_collect(user_name, text_query, since_date,  count, language, result_ty
 
 def push(path, message, content, author, author_mail, branch = "main"):
     """
-    Función encargada de subir los archivos encontrados a Github.
+    Function in charge of uploading the dehydrated TXT files to GitHub.
 
     Parameters
     ----------
     path : string
-        Ruta del archivo que queremos subir.
+        File path to upload to GitHub.
     message : string
-        Mensaje que queremos emplear para el commit.
+        Commit message
     content : json
-        Contenido del archivo que queremos subir a Github.
+        TXT file content
     branch : string, optional
-        Rama donde queremos hacer push. The default is "main".
+        Branch to push TXT file. The default is "main".
 
     Returns
     -------
@@ -448,71 +309,7 @@ if numOpts < 2:
 elif options.help:
     print_usage()
     
-if options.today: #  and not options.yesterday: 
-    # Creamos la fecha correspondiente al día empezando en 00:00h
-    now_datetime = datetime.datetime.now()
-    since_date = now_datetime.replace(hour=23, minute=59, second=59,
-                                      microsecond=999999)
-    
-if options.day:
-    since_date = datetime.datetime.now() - datetime.timedelta(options.day)
-    since_date = since_date.replace(hour=23, minute=59, second=59, 
-                                   microsecond=999999)
-if not options.count:
-    options.count = 200
-    
-if options.tweets_source_info:
-    print_tweets_source_info()
-
-# CREDENTIALS
-api_key = "h50aoVmiuNFuHI8o3dZE7C15N"
-api_secret_key = "Dz6jeUBUdGp43uJugObOgIqnVdCbUrbrkwkcjAibmlDQwq6sdL"
-access_token = "1311739853307027457-HqUEzNSGtzdFqkFDFmdYg5UcMEjPv2"
-access_token_secret = "iabmz6wZ0gucIodSNJ9TfSfnrT17yJXjDAu13y4QF8hLI"
-
-
-if options.git_token and options.git_repo:
-    g = Github(options.git_token)
-    repo = g.get_repo(options.git_repo)
-else:
-    print("\nImportante: Se requiere un repositorio de GitHub y un Token de acceso")
-    print_usage()
-    
-if options.git_autor:
-    autor = options.git_autor
-else:
-    autor = "Huertas97"
-
-if options.git_autor_email:
-    email = options.git_autor_email
-else:
-    email = "ahuertasg01@gmail.com"
-    
-
-
-
-
-
-# STARTING API
-twitter = OAuth1Session(api_key,
-                        client_secret=api_secret_key,
-                        resource_owner_key=access_token,
-                        resource_owner_secret=access_token_secret)
-
-# OAuth 1a (application-user). Rate limit: 180 requests in 15 min window
-# auth = tweepy.OAuthHandler(api_key, api_secret_key)
-# auth.set_access_token(access_token, access_token_secret)
-
-# OAuth 2 (application-only). Rate limit: 450 requets in 15 min window
-auth = tweepy.AppAuthHandler(api_key, api_secret_key)
-
-# When we set wait_on_rate_limit to True, we will have our program wait
-# automatically 15 minutes so that Twitter does not lock us out, whenever we
-# exceed the rate limit and we automatically continue to get new data!
-api = tweepy.API(auth, wait_on_rate_limit=True)
-
-
-# usurarios de los que recoger tweets
+# Twiiter Accounts
 dic_user = {
     # Hastags
     "Plandemia": ["es", "#", "mixed"],
@@ -529,7 +326,7 @@ dic_user = {
     # infodemia 
     
     
-    # No fiable
+    # Not checked
     "No__Plandemia": ["es", "from:"],
     "ANTIMASCARILLA": ["es", "from:"],
     "FoxMuld88326271": ["es", "from:"],
@@ -582,7 +379,7 @@ dic_user = {
     "The_Cling_On": ["en", "from:"], # Australia
     
     
-    # No fiable satira
+    # Satire
     "elmundotoday": ["es", "from:"],
     "eljueves": ["es", "from:"],
     "okdiario": ["es", "from:"],
@@ -598,7 +395,7 @@ dic_user = {
     
     
     
-    # dudoso, precipitado
+    # Doubtful
     "tiramillas": ["es", "from:"],
     "20m": ["es", "from:"],
     "ActualidadRT": ["es", "from:"],
@@ -609,16 +406,16 @@ dic_user = {
     "periodistadigit": ["es", "from:"],
     "CancerIntegral": ["es", "from:"],
     
-    # Dudoso porque es traducción de Donald Trump
+    # Donald Trump in Spanish
     "POTUS_Trump_ESP": ["es", "-filter:replies AND -filter:retweet AND from:"],
     
-    # Fiable, organizaciones
+    # Institutions
     "SaludPublicaEs": ["es", "from:"],
     "sanidadgob": ["es", "from:"],
     "andaluciadatos": ["es", "from:"],
     "opsoms": ["es", "from:"],
     "WHO": ["en", "from:"],
-    "AEMPSGOB": ["es", "from:"],  # agencia española del medicamento
+    "AEMPSGOB": ["es", "from:"],  # spanish drug agency
     "FDAenEspanol": ["es", "from:"],
     "CDCespanol": ["es", "from:"],
     "policia": ["es", "from:"],
@@ -632,14 +429,14 @@ dic_user = {
     "HopkinsMedicine": ["en", "from:"],
     "MayoClinic": ["en", "from:"],
     
-    # Revistas cientificas
+    # Scientific magazines
     "NatureComms": ["en", "from:"],
     "researchnews": ["en", "from:"],
     "CellPressNews": ["en", "from:"],
     "TrendsMolecMed": ["en", "from:"],
     "embojournal": ["en", "from:"],
     
-    # Fiable, verificadores
+    # Fact-checkers
     "malditobulo": ["es", "from:"], # España
     "maldita_ciencia": ["es", "from:"], # España
     "EFEVerifica": ["es", "from:"], # España
@@ -705,32 +502,32 @@ dic_user = {
     "franceinfo": ["fr", "from:"], # France
     
     
-    # Periodicos Latino América
+    # America newspapers
     "JustiaLatinAmer": ["es", "from:"], # Latino América
     "ReutersLatam": ["es", "from:"], # Latino América
     "UniNoticias": ["es", "from:"], # Latino América
     "14ymedio": ["es", "from:"], # Cuba
-    "prensa_libre": ["es", "from:"], # Guatemala (Recomendado por The Guardian)
-    "ABCDigital": ["es", "from:"], # Paraguay (Recomendado por The Guardian)
-    "ObservadorUY": ["es", "from:"], # Urugay (Recomendado por The Guardian) 
-    "Milenio": ["es", "from:"], # México (Recomendado por The Guardian)
-    "ElMercurio_cl": ["es", "from:"], # Chile (Recomendado por The Guardian)
-    "elcomerciocom": ["es", "from:"], # Ecuador (Recomendado por The Guardian)
-    "ElMundoBolivia": ["es", "from:"], # Bolivia (Recomendado por The Guardian)
-    "laprensa": ["es", "from:"], # Nicaragua (Recomendado por The Guardian)
-    "elespectador": ["es", "from:"], # Colombia (Recomendado por The Guardian)
+    "prensa_libre": ["es", "from:"], # Guatemala (Recommended by The Guardian)
+    "ABCDigital": ["es", "from:"], # Paraguay (Recommended by The Guardian)
+    "ObservadorUY": ["es", "from:"], # Urugay (Recommended by The Guardian) 
+    "Milenio": ["es", "from:"], # México (Recommended by The Guardian)
+    "ElMercurio_cl": ["es", "from:"], # Chile (Recommended by The Guardian)
+    "elcomerciocom": ["es", "from:"], # Ecuador (Recommended by The Guardian)
+    "ElMundoBolivia": ["es", "from:"], # Bolivia (Recommended by The Guardian)
+    "laprensa": ["es", "from:"], # Nicaragua (Recommended by The Guardian)
+    "elespectador": ["es", "from:"], # Colombia (Recommended by The Guardian)
     
-    # Periodicos Latino América reconocidos
-    "Pajaropolitico": ["es", "from:"], # reconocido por Poynter
+    # America newspapers renowed
+    "Pajaropolitico": ["es", "from:"], # from Poynter
     "elcomerciodigit": ["es", "from:"], # The Trust Project Perú
     "LANACION": ["es", "from:"], # The Trust Project Argetina
     "ElUniversal": ["es", "from:"], # The Trust Project Venezuela
     
-    # Periodicos US
+    # US newspapers
     "nytimes": ["en", "from:"], # US
     "AmPress": ["en", "from:"], # US
     
-    # Periodicos España
+    # Spain newspapers
     "el_pais": ["es", "from:"],
     "eldiarioes": ["es", "from:"],
     "elmundoes": ["es", "from:"],
@@ -739,10 +536,10 @@ dic_user = {
     "telediario_tve": ["es", "from:"],
     "24h_tve": ["es", "from:"],
     
-    # Periodico internacional
+    # International newspaper
     "bbcmundo": ["es", "from:"], # Internacional
     
-    # Periodicos médicos España
+    # MEdical magazines from Spain
     "diariomedico": ["es", "from:"],
     "Consalud_es": ["es", "from:"],
     "redaccionmedica": ["es", "from:"],
@@ -750,11 +547,89 @@ dic_user = {
 
 }
 
-dic_user = {
-    # Hastags
-     "US_FDA": ["en", "from:"]
-         
-    }
+# Feel free to modify the Twitter accounts showed above
+# dic_user = {
+#     "US_FDA": ["en", "from:"]       
+#     }
+
+def print_tweets_source_info(dic_user):
+    print("""Twitter accounts used by default:""")
+    print(sorted(list(dic_user.keys())))
+    sys.exit()
+    
+if options.tweets_source_info:
+    print_tweets_source_info(dic_user)    
+    
+    
+if not all([options.api_key, options.api_secret_key,
+            options.access_token, options.access_token_secret
+            ]) or options.help:
+    print_usage()    
+    
+if options.today: #  and not options.yesterday: 
+    # Create date starting from 00:00h
+    now_datetime = datetime.datetime.now()
+    since_date = now_datetime.replace(hour=23, minute=59, second=59,
+                                      microsecond=999999)
+    
+if options.day:
+    since_date = datetime.datetime.now() - datetime.timedelta(options.day)
+    since_date = since_date.replace(hour=23, minute=59, second=59, 
+                                   microsecond=999999)
+# Default number of tweets
+if not options.count:
+    options.count = 200
+    
+
+
+# CREDENTIALS
+api_key = options.api_key
+api_secret_key = options.api_secret_key
+access_token = options.access_token
+access_token_secret = options.access_token_secret
+
+
+if options.git_token and options.git_repo:
+    g = Github(options.git_token)
+    repo = g.get_repo(options.git_repo)
+else:
+    print("\nImportant: A GitHub repository and access token are required")
+    print_usage()
+    
+if options.git_autor:
+    autor = options.git_autor
+else:
+    autor = "Huertas97"
+
+if options.git_autor_email:
+    email = options.git_autor_email
+else:
+    email = "ahuertasg01@gmail.com"
+    
+
+
+
+
+
+# STARTING API
+twitter = OAuth1Session(api_key,
+                        client_secret=api_secret_key,
+                        resource_owner_key=access_token,
+                        resource_owner_secret=access_token_secret)
+
+# OAuth 1a (application-user). Rate limit: 180 requests in 15 min window
+# auth = tweepy.OAuthHandler(api_key, api_secret_key)
+# auth.set_access_token(access_token, access_token_secret)
+
+# OAuth 2 (application-only). Rate limit: 450 requets in 15 min window
+auth = tweepy.AppAuthHandler(api_key, api_secret_key)
+
+# When we set wait_on_rate_limit to True, we will have our program wait
+# automatically 15 minutes so that Twitter does not lock us out, whenever we
+# exceed the rate limit and we automatically continue to get new data!
+api = tweepy.API(auth, wait_on_rate_limit=True)
+
+
 
 
 # today = datetime.date.today()
