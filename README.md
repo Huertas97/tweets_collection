@@ -1,9 +1,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/Huertas97/tweets_collection?style=plastic) ![GitHub repo size](https://img.shields.io/github/repo-size/Huertas97/tweets_collection?style=plastic) ![GitHub watchers](https://img.shields.io/github/watchers/Huertas97/tweets_collection?style=social)
 
-# **Autor** 
-Álvaro Huertas García
 
-# Índice
+# Index
  
  * [Information](#information)
  * [Usage](#usage)
@@ -30,6 +28,8 @@ The extracted tweets are organized by date (day) and by user or hastags. The ext
  * account url 
  * tweet entities (url, hastags, etc)
 
+# Tweets hydratation anddehydratation
+Due to Twitter’s Developer terms and research ethics, most tweets we can acquire from Twitter’s Application Programming Interface (API) and third-party databases are dehydrated tweets. This is, instead of sharing tweet contents, geolocations, time, images, and other attached information to tweets, what researchers would initially share is a plain text file consisting of a list of unique tweet IDs. These IDs allow us to retrieve all tweet metadata, including the text, and they need to be “hydrated” to recover the metadata and to become meaningful research sources. The large size of tweets’ correlated data is another reason why datasets offer only dehydrated IDs. In this repository, a script for hydrating and dehydrating tweets is available. More information in [Usage](#usage), 
 
 # Usage
 
@@ -123,5 +123,57 @@ Twitter accounts used by default:
 ```
 
 
+For hydrating tweets available as txt files in the repository use `hydrate_tweets.py`:
 
+
+
+```
+$ python hydrate_tweets.py --help
+
+Python script to hydrate the tweets ids from tweets folder collected in this
+Huertas97/tweets_collection GitHub
+
+
+Requirements:
+    Key, secret key, access token and secret access token to Twitter API
+    Request these credentials in https://developer.twitter.com/en/docs/twitter-api
+
+Usage:
+
+     python hydrate_tweets.py [options]
+
+Options:
+    --api_key                    CONSUMER_KEY
+    --api_secret_key             CONSUMER_SECRET
+    --access_token               ACCESS TOKEN
+    --access_token_secret         ACCESS TOKEN SECRET
+    --tweets_path                Path where the tweets to dehydrate are located
+    --help                       Help documentation
+
+Example.
+    $ python hydrate_tweets.py --api_key XXX --api_secret_key XXX --access_token XXX \
+        --access_token_secret XXX --tweets_path tweets/
+```
+
+For dehydrating tweets JSON files downloaded locally use `dehydrate_tweets.py`:
+
+```
+$ python dehydrate_tweets.py --help
+
+Python script to dehydrate the tweets ids from tweets folder collected with
+Tweet_wrapper_v2.py from the repository Huertas97/tweets_collection GitHub
+
+
+Usage:
+
+     python dehydrate_tweets.py [options]
+
+Options:
+    --tweets_path                Path where the tweets to dehydrate are located
+    --output_name                Name for folder where dehydrated results will be stored. Default: "dehydrated_tweets"
+    --help                       Help documentation
+
+Example:
+    $ python dehydrate_tweets.py --tweets_path tweets/ --output_name dehydrated_output
+```
 
