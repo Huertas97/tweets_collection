@@ -14,13 +14,13 @@
 ## TODO
 
 
-# Instrucciones para extraer los tweets
-El primer paso es clonar el repositorio en la carpeta personal de interés:
+# Usage
 
+First step is to clone the repository: 
 `$ git clone https://github.com/Huertas97/tweets_collection.git`
 
-O descargar tan sólo el archivo Tweet_wrapper_v2.py si se desea sólo extraer tweets. Las cuentas de las que se extraen los tweets pueden ser modificadas en este código. 
-Una vez descargado, si se intenta emplear el programa lo más probable es que no funcione dado que se requieren una serie de librerías específicas. El programa notifica cuales son estas librerías. No obstante, por aclaración se muestran a continuación:
+Or download only the file Tweet_wrapper_v2.py if you want to extract only tweets. The accounts used for extracting the tweets can be modified in this code. 
+Once downloaded, if you try to use the program it will most likely not work since a number of specific libraries are required. The program notifies which are these libraries. However, for clarification they are shown below:
 
 ```
 !pip install -U -q tweepy
@@ -29,213 +29,99 @@ Una vez descargado, si se intenta emplear el programa lo más probable es que no
 !pip install -U -q tqdm
 ```
 
-Igualemente, se puede acceder a la ayuda del programa con el comando:
+Likewise, the program's help can be accessed with the command:
 `$ python Tweet_wrapper_v2.py --help`
 
-El programa requiere
-Uso: 
+Output:
 ```
+Information:
+    This script allows the user to collects dehydrated and hydrated tweets from
+    Twitter accounts.The default Twitter accounts were selected by hand.
+    Feel free for change the ones selected in this script. Tweets extractions is
+    accomplish using Tweepy. Hydrated tweets are saved locally. Dehydrated tweets
+    are the ones uploaded to GitHub.
+
+    Be aware of the "Rate Limits" from Twitter. Among these limits, the number of
+    tweet extraction requests is up to 450 in a temporal window of 15 minutes.
+    Once the temporal windows ends, the number of requests are restarted.
+    Nevertheless, the code has been developed to manage and inform about these
+    temporal windows and to continue the tweets extraction.
+
+    Morevoer, you should be aware that Twitter Policy only allows to extract
+    tweets within the las 7 days (30 days for Premium API).
+
+    The tweets collected are saved as json files. The Twitter accounts without
+    tweets available for the date selected do not create json files. The information
+    saved in the json files are the following ones:
+        - account name
+        - tweet id
+        - full text (both tweet and retweet)
+        - verification of the account
+        - tweet date creation
+        - nº of times retweeted
+        - favourites count
+        - tweet location (if available)
+        - account url
+        - tweet entities (url, hastags, etc)
+
+Usage:
     python Tweet_wrapper_v2.py [options]
-    Options:
-             -t, --today              Recogemos los tweets de la fecha actual.
-             -d, --day                Recogemos los tweets de la fecha "d" días atrás a la actual siendo 1 ayer. Type: int
-             -c, --count              Indicamos la cantidad máxima de tweets que queremos extraer de cada usuario o hastag    
-             --git_token              Token necesario para poder acceder al repositorio de Github
-             --git_repo               Dirección del repositorio donde se desea guardar los archivos json con los tweets
-             --tweets_source_info     Información sobre las cuentas de Twitter sobre las que se buscarán Tweets
-             --git_autor              Autor de los cambios realizados en el repositorio de Github
-             --git_autor_email        E-mail del autor de los cambios realizados en el repositorio de Github
+
+Options:
+    -t, --today                  Collect tweets from today
+    -d, --day                    Number of days to go back in time to collect tweets. Ex: 1 = yesterday.
+    -c, --count                  Number of tweets collected per user. Directly related with computing time. Default: 200
+    --git_token                  Token needed to access the Github repository where the results will be saved
+    --git_repo                   Repository where you want to save the json file generated after tweet extraction
+    --tweets_source_info         Information. Show the Twitter accounts used for the tweets extraction
+    --git_autor                  GitHub changes author
+    --git_autor_email            E-mail author
+    --api_key                    CONSUMER_KEY
+    --api_secret_key             CONSUMER_SECRET
+    --access_token               ACCESS TOKEN
+    --access_token_secret        ACCESS TOKEN SECRET
+
+Requirements:
+     -> tweepy             (pip install -U -q tweepy)
+     -> emoji              (pip install -U -q emoji)
+     -> github             (pip install -U -q PyGithub)
+     -> tqdm               (pip install -U -q tqdm)
+     -> requests_oauthlib  (pip install -U -q requests-oauthlib)
+
+     Furthermore, you should have a GitHub account and a Twitter Developer API
+     credentials.
+
+Example. Collect up to 1000 tweets from today:
+    $ python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection \
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX
 ```
     
-Ejemplo. 
-Cogemos hasta 100 tweets con la fecha del día de hoy:
+Also, you can consult the Twitter accounts used by:
 
-    $python Tweet_wrapper_v2.py -t -c 100  --git_token XXX --git_repo Huertas97/tweets_collection
+`$ python Tweet_wrapper_v2.py --tweets_source_info `
+
+```
+Twitter accounts used by default:
+['#FactCHAT', '#FakePCR', '#PCRFraude', '#VacunaRusa', '#VirusChino', '1333Despierta', '14ymedio', '20m', '24h_tve', 'AAPNewswire', 'ABCDigital', 'ABCFactCheck', 'AEMPSGOB', 'ANTIMASCARILLA', 'AP', 'ActualidadRT', 'AfricaCheck', 'Africamar', 'AlbaGar74381296', 'AmPress', 'Angelisimo2', 'AquAhora1', 'AtraviesaLoDesc', 'Autnomacabread1', 'BabylonDab', 'CDCespanol', 'CDCgov', 'CancerIntegral', 'CarmCerb21', 'CellPressNews', 'CheckCongo', 'CheckNewsfr', 'Check_Your_Fact', 'Chequeado', 'ChiguireBipolar', 'ClimateFdbk', 'Consalud_es', 'DathosBD', 'DemagogPL', 'DiegoMo53772865', 'ECUADORCHEQUEA', 'EFEVerifica', 'EFEnoticias', 'ELMINIMALISTA1', 'ElMercurio_cl', 'ElMundoBolivia', 'ElSabuesoAP', 'ElTrompetista78', 'ElUniversal', 'FDA_Drug_Info', 'FDAenEspanol', 'FDArecalls', 'FactCheckNI', 'FactCrescendo', 'FactlyIndia', 'Fatabyyano_com', 'FerretScot', 'FoxMuld88326271', 'FrayJosepho', 'FullFact', 'GlennKesslerWP', 'HayNoticia', 'HerbolarioLola', 'HomeopatiaY', 'HopkinsMedicine', 'IndiaToday', 'IsTortugo', 'JL_MDesconocido', 'JordiFlynn', 'JornalPoligrafo', 'JosPastr', 'JustiaLatinAmer', 'LANACION', 'LRsecreta', 'LaRetuerka', 'LaVozIberica', 'LaVozdelBecario', 'LogicallyAI', 'MaharatNews', 'MayoClinic', 'MediterraneoDGT', 'MiHerbolario', 'Milenio', 'Musicolorista', 'NEJM', 'NIH', 'NUnl', 'NatureComms', 'NaturopatasCol', 'NewsMeter_In', 'NewsMobileIndia', 'Newtral', 'NiusDiario', 'NoHayPandemia__', 'No__Plandemia', 'NoalaVacuna', 'ObservadorUY', 'Observateurs', 'POTUS_Trump_ESP', 'PacienteL', 'PagellaPolitica', 'Pajaropolitico', 'PericoAFuego', 'PesaCheck', 'Plandemia', 'PorunChileDigno', 'Poynter', 'ProgreAzote', 'ReutersAgency', 'ReutersLatam', 'SaludPublicaEs', 'SouthAsiaCheck', 'StopFakingNews', 'TheBabylonBee', 'TheOnion', 'TheQuint', 'The_Cling_On', 'ThipMedia', 'TrendsMolecMed', 'USATODAY', 'US_FDA', 'UniNoticias', 'VaccineSafetyN', 'VaccineXchange', 'WHO', 'YoNoMeVacuno', '_nWorder', 'abc_es', 'actualidadpanam', 'andaluciadatos', 'aosfatos', 'bbcmundo', 'boomlive_in', 'coronatimo', 'correctiv_org', 'cotejoinfo', 'covid1984', 'diariomedico', 'doctor_papaya', 'dogrulukpayicom', 'dpa', 'dubawaNG', 'el_pais', 'elcomerciocom', 'elcomerciodigit', 'eldiarioes', 'elentirvigo', 'elespectador', 'eljueves', 'elmundoes', 'elmundotoday', 'elphabaz', 'embojournal', 'estadaoverifica', 'eye_digit', 'factchecknet', 'franceinfo', 'ghana_fact', 'gonzo_blogger', 'guardiacivil', 'hermanntertsch', 'informate_infor', 'lamjort', 'laprensa', 'lasillavacia', 'ldpsincomplejos', 'lemondefr', 'maldita_ciencia', 'malditobulo', 'mediawise', 'mitokondriac', 'newsvishvas', 'nytimes', 'observadorpt', 'okdiario', 'opsoms', 'panguerrera1', 'papayaykware', 'patrilaselma', 'periodistadigit', 'policia', 'prensa_libre', 'rapplerdotcom', 'redaccionmedica', 'researchnews', 'revisbarcelona', 'sanidadgob', 'snopes', 'tecn_preocupado', 'telediario_tve', 'teyitorg', 'the_raven77', 'thecliniccl', 'thedispatch', 'thejournal_ie', 'tiramillas', 'trustdall271', 'velardedaoiz2', 'verafiles', 'yonomeconfino']
+```
 
 # **Información del repositorio** 
-Repositorio donde se almacenan los tweets extraídos de diversas cuentas y hastags (total 113) de Twitter desde el 1 de Octubre de 2020. Diariamente se añaden los tweets extraídos del día anterior. Aunque no se aplica ningún filtro de contenido a los tweets extraídos (por ejemplo no se pone como requisito que en el tweet aparezca el término COVID-19), los hastags y las cuentas han sido seleccionadas manualmente en función de si su contenido se ajustaba a la situación actual de emergencia sanitaria de la COVID-19. 
 
-Los tweets extraídos se encuentran organizados por fecha (día) y por usuario o hastags.  
-Los tweets extraídos se guardan en formato json. Las cuentas que no dispogan de tweets no cren ningún archivo json. La información en los ficheros json es:
+Repository where tweets extracted from various Twitter accounts and hastags (total 200) are stored from October 1, 2020. The tweets extracted from the previous day are added daily. Although no content filter is applied to the extracted tweets (e.g. the term COVID-19 is not required to appear in the tweet), the hastags and accounts have been manually selected depending on whether their content fits the current COVID-19 health emergency situation. Feel free to add or change the Twitter accounts.  
 
- * nombre de la cuenta
- * identificador del tweet
- * si es un retweet
- * texto completo (tanto de tweet como retweet)
- * información sobre si la cuenta está verificada
+The extracted tweets are organized by date (day) and by user or hastags. The extracted tweets are locally saved in json format and uploaded to GitHub as txt files only with the tweet ids (dehydrated). Accounts without tweets do not create any json file. The information in the json files is:
+
+ * account name
+ * tweet id
+ * full text (both tweet and retweet)
+ * verification of the account
+ * tweet date creation
  * fecha de creación del tweet
- * nº de veces que ha sido retweet
- * nº de veces que ha sido marcado como favorito
- * localización del tweet
- * url a la cuenta del usuario
- * entidades del tweets (enlaces, hastags etc)
+ * nº of times retweeted
+ * favourites count
+ * tweet location (if available)
+ * account url 
+ * tweet entities (url, hastags, etc)
 
-Las cuentas y hastags empleados en la extracción de tweets se muestran a continuación:
-
-| Hastags  (Nº = 9)      |
-|----------------|
-| #Plandemia     |
-| #yonomeconfino |
-| #coronatimo    |
-| #YoNoMeVacuno  |
-| #covid1984     |
-| #NoalaVacuna   |
-| #VirusChino    |
-| #VacunaRusa    |
-| #PCRFraude     |
-
-
-| Usuarios no institucionales (No fiable, Nº = 49) |
-|--------------------------------------------------|
-| @No__Plandemia                                   |
-| @ANTIMASCARILLA                                  |
-| @FoxMuld88326271                                 |
-| @PericoAFuego                                    |
-| @DiegoMo53772865                                 |
-| @the_raven77                                     |
-| @LRsecreta                                       |
-| @JL_MDesconocido                                 |
-| @AtraviesaLoDesc                                 |
-| @HomeopatiaY                                     |
-| @NaturopatasCol                                  |
-| @MiHerbolario                                    |
-| @HerbolarioLola                                  |
-| @PacienteL                                       |
-| @elphabaz                                        |
-| @IsTortugo                                       |
-| @tecn_preocupado                                 |
-| @BabylonDab                                      |
-| @lamjort                                         |
-| @VaccineXchange                                  |
-| @gonzo_blogger                                   |
-| @CarmCerb21                                      |
-| @panguerrera1                                    |
-| @AlbaGar74381296                                 |
-| @MediterraneoDGT                                 |
-| @JosPastr                                        |
-| @velardedaoiz2                                   |
-| @JordiFlynn                                      |
-| @mitokondriac                                    |
-| @AquAhora1                                       |
-| @patrilaselma                                    |
-| @doctor_papaya                                   |
-| @Autnomacabread1                                 |
-| @LaRetuerka                                      |
-| @DathosBD                                        |
-| @PorunChileDigno                                 |
-| @1333Despierta                                   |
-| @NoHayPandemia__                                 |
-| @Musicolorista                                   |
-| @ELMINIMALISTA1                                  |
-| @Africamar                                       |
-| @informate_infor                                 |
-| @ElTrompetista78                                 |
-| @Angelisimo2                                     |
-| @_nWorder                                        |
-| @papayaykware                                    |
-| @trustdall271                                    |
-|     @elentirvigo                                 |
-|    @ProgreAzote                                  |
-
-
-| Preiódicos de Sátira (No fiable, Nº = 9) |
-|------------------------------------------|
-| @elmundotoday                            |
-| @eljueves                                |
-| @LaVozdelBecario                         |
-| @HayNoticia                              |
-| @FrayJosepho                             |
-| @ChiguireBipolar                         |
-| @actualidadpanam                         |
-| @revisbarcelona                          |
-| @thecliniccl                             |
-
-| Bases periodísticas Dudosas o Precipitadas de interés (Cuestionable, N = 10) |
-|----------------------------------------------------------------|
-| @tiramillas                                                    |
-| @20m                                                           |
-| @okdiario                                                      |
-| @ActualidadRT                                                  |
-| @ldpsincomplejos                                               |
-| @hermanntertsch                                                |
-| @NiusDiario                                                    |
-| @LaVozIberica                                                  |
-| @periodistadigit                                               |
-| @CancerIntegral                                                |
-
-| Traducción NO OFICIAL de Donald Trump (Cuestionable, Nº = 1) |
-|------------------------------------------------------|
-| @POTUS_Trump_ESP                                     |
-
-
-
-| Organizaciones institucionales (Fiables, Nº = 10) |
-|---------------------------------------------------|
-| @SaludPublicaEs                                   |
-| @sanidadgob                                       |
-| @andaluciadatos                                   |
-| @opsoms                                           |
-| @WHO                                              |
-| @AEMPSGOB                                         |
-| @FDAenEspanol                                     |
-| @CDCespanol                                       |
-| @policia                                          |
-| @guardiacivil                                     |
-
-
-| Verificadores acreditados por Poynter (Fiable, Nº = 10) |
-|---------------------------------------------------------|
-| @malditobulo  (España)                                          |
-| @maldita_ciencia  (España)                                   |
-| @EFEVerifica  (España)                                           |
-| @Chequeado (Argentina)                                             |
-| @Newtral (España)                                        |
-| @FullFact (UK)                                               |
-| @ElSabuesoAP (México)                                           |
-| @cotejoinfo (Venezuela)                                            |
-| @ECUADORCHEQUEA (Ecuador)                                        |
-| @lasillavacia (Colombia)                                          |
-
-| Bases periodísticas sobre medicina (Nº = 17) |
-|----------------------------------------------|
-| @JustiaLatinAmer                             |
-| @ReutersLatam                                |
-| @UniNoticias                                 |
-| @14ymedio(Cuba)                              |
-| @prensa_libre (Guatemala)                    |
-| @ABCDigital (Paraguay)                       |
-| @ObservadorUY (Uruguay)                      |
-| @Milenio (México)                            |
-| @ElMercurio_cl (Chile)                       |
-| @elcomerciocom (Ecuador)                     |
-| @ElMundoBolivia (Bolivia)                    |
-| @laprensa (Nicaragua)                        |
-| @elespectador (Colombia)                     |
-| @Pajaropolitico                              |
-| @elcomerciodigit (Perú, The Trust Project)   |
-| @LANACION (Argetina, The Trust Project)      |
-| @ElUniversal (Venezuela, The Trust Project)  |
-
-| Bases periodísticas España (Nº = 7) |
-|-------------------------------------|
-| @el_pais                            |
-| @eldiarioes                         |
-| @elmundoes                          |
-| @EFEnoticias                        |
-| @abc_es                             |
-| @telediario_tve                     |
-| @24h_tve                            |
-
-
-| Bases periodísticas internacionales (Nº = 1) |
-|-------------------------------------|
-| @bbcmundo                             |
-
-| Bases periodísticas sobre medicina (Nº = 4) |
-|---------------------------------------------|
-| @diariomedico                               |
-| @Consalud_es                                |
-| @redaccionmedica                            |
-| @VaccineSafetyN                             |
 
 
