@@ -4,11 +4,9 @@
 # Index
  
  * [Information](#information)
+ * [General schema](#general-schema)
  * [Tweets hydratation and dehydratation](#tweets-hydratation-and-dehydratation)
  * [Usage](#usage)
-
-
-[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uIC5dIFxuQyAtLT4gfERlaHlkcmF0ZXwgRChUWFQgZmlsZSBmYTpmYS1maWxlLXRleHQgLiApXG5cbkMgLS0-IHxTYXZlIGxvY2FsbHl8IEZbIEpTT04gZmlsZSBmYTpmYS1maWxlIC4gIF1cbkQgLS0-fFVwbG9hZHwgRVtHaXRIdWIgZmE6ZmEtZ2l0aHViIC5dXG5EIC0tPiAgfGh5ZHJhdGVkX3R3ZWV0cy5weXwgRlxuIiwibWVybWFpZCI6eyJ0aGVtZSI6Im5ldXRyYWwifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uIC5dIFxuQyAtLT4gfERlaHlkcmF0ZXwgRChUWFQgZmlsZSBmYTpmYS1maWxlLXRleHQgLiApXG5cbkMgLS0-IHxTYXZlIGxvY2FsbHl8IEZbIEpTT04gZmlsZSBmYTpmYS1maWxlIC4gIF1cbkQgLS0-fFVwbG9hZHwgRVtHaXRIdWIgZmE6ZmEtZ2l0aHViIC5dXG5EIC0tPiAgfGh5ZHJhdGVkX3R3ZWV0cy5weXwgRlxuIiwibWVybWFpZCI6eyJ0aGVtZSI6Im5ldXRyYWwifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
 
 
 # **Information** 
@@ -31,6 +29,10 @@ The extracted tweets are organized by date (day) and by user or hastags. The ext
 
 # Tweets hydratation and dehydratation
 Due to Twitter’s Developer terms and research ethics, most tweets we can acquire from Twitter’s Application Programming Interface (API) and third-party databases are dehydrated tweets. This is, instead of sharing tweet contents, geolocations, time, images, and other attached information to tweets, what researchers would initially share is a plain text file consisting of a list of unique tweet IDs. These IDs allow us to retrieve all tweet metadata, including the text, and they need to be “hydrated” to recover the metadata and to become meaningful research sources. The large size of tweets’ correlated data is another reason why datasets offer only dehydrated IDs. In this repository, a script for hydrating and dehydrating tweets is available. More information in [Usage](#usage), 
+
+# General schema
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
 
 # Usage
 
