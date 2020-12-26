@@ -13,7 +13,7 @@
 
 Repository where tweets extracted from various Twitter accounts and hastags (total 200) are stored from October 1, 2020. The tweets extracted from the previous day are added daily. Although no content filter is applied to the extracted tweets (e.g. the term COVID-19 is not required to appear in the tweet), the hastags and accounts have been manually selected depending on whether their content fits the current COVID-19 health emergency situation. Feel free to add or change the Twitter accounts.  
 
-The extracted tweets are organized by date (day) and by user or hastags. The extracted tweets can be locally saved on json format, uploaded to MongoDB as JSON files, or uploaded to GitHub as txt files only with the tweet ids (dehydrated). Accounts without tweets do not create any file. The information in the json files (hydrated) is:
+The extracted tweets are organized by date (day) and by user or hastags. The extracted tweets can be locally saved as json format, uploaded to MongoDB as JSON files, or uploaded to GitHub as txt files only with the tweet ids (dehydrated). Accounts without tweets do not create any file. The information in the json files (hydrated) is:
 
  * account name
  * tweet id
