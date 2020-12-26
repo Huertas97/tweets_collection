@@ -13,7 +13,7 @@
 
 Repository where tweets extracted from various Twitter accounts and hastags (total 200) are stored from October 1, 2020. The tweets extracted from the previous day are added daily. Although no content filter is applied to the extracted tweets (e.g. the term COVID-19 is not required to appear in the tweet), the hastags and accounts have been manually selected depending on whether their content fits the current COVID-19 health emergency situation. Feel free to add or change the Twitter accounts.  
 
-The extracted tweets are organized by date (day) and by user or hastags. The extracted tweets are locally saved in json format and uploaded to GitHub as txt files only with the tweet ids (dehydrated). Accounts without tweets do not create any json file. The information in the json files is:
+The extracted tweets are organized by date (day) and by user or hastags. The extracted tweets can be locally saved on json format, uploaded to MongoDB as JSON files, or uploaded to GitHub as txt files only with the tweet ids (dehydrated). Accounts without tweets do not create any file. The information in the json files (hydrated) is:
 
  * account name
  * tweet id
@@ -32,7 +32,8 @@ Due to Twitter’s Developer terms and research ethics, most tweets we can acqui
 
 # General schema
 
-[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVEJcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tUd2VldHMgaW5mb3JtYXRpb24gZXh0cmFjdGVkXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuRCAtLT58VXBsb2FkfCBFW0dpdEh1YiBmYTpmYS1naXRodWIgLl1cbkQgLS0-ICB8aHlkcmF0ZWRfdHdlZXRzLnB5fCBGXG5GIC0tPiB8dXBsb2FkX21vbmdvLnB5fCBHW01vbmdvREIgZmE6ZmEtZGF0YWJhc2UgLl1cblxuQyAtLT4gfFNhdmUgbG9jYWxseXwgRlsgSlNPTiBmaWxlIGZhOmZhLWZpbGUgLiAgXSBcbkMgLS0-IHxVcGxvYWR8IEdcblxuXG5cbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVEJcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tUd2VldHMgaW5mb3JtYXRpb24gZXh0cmFjdGVkXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuRCAtLT58VXBsb2FkfCBFW0dpdEh1YiBmYTpmYS1naXRodWIgLl1cbkQgLS0-ICB8aHlkcmF0ZWRfdHdlZXRzLnB5fCBGXG5GIC0tPiB8dXBsb2FkX21vbmdvLnB5fCBHW01vbmdvREIgZmE6ZmEtZGF0YWJhc2UgLl1cblxuQyAtLT4gfFNhdmUgbG9jYWxseXwgRlsgSlNPTiBmaWxlIGZhOmZhLWZpbGUgLiAgXSBcbkMgLS0-IHxVcGxvYWR8IEdcblxuXG5cbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
 
 # Usage and Examples
 
