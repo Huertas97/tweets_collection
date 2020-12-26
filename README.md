@@ -6,7 +6,7 @@
  * [Information](#information)
  * [General schema](#general-schema)
  * [Tweets hydratation and dehydratation](#tweets-hydratation-and-dehydratation)
- * [Usage](#usage)
+ * [Usage and Examples](#usage-and-examples)
 
 
 # **Information** 
@@ -34,7 +34,7 @@ Due to Twitter’s Developer terms and research ethics, most tweets we can acqui
 
 [![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbkFbVHdpdHRlciBVc2VybmFtZV0gLS0-IEIoIFR3aXR0ZXIgQVBJIGZhOmZhLXR3aXR0ZXIgLilcbkIgLS0-IHwgVHdlZXRfd3JhcHBlcl92Mi5weXwgQ1tFeHRyYWN0IGluZm9ybWF0aW9uXSBcbkMgLS0-IHxEZWh5ZHJhdGV8IEQoVFhUIGZpbGUgZmE6ZmEtZmlsZS10ZXh0IC4gKVxuXG5DIC0tPiB8U2F2ZSBsb2NhbGx5fCBGWyBKU09OIGZpbGUgZmE6ZmEtZmlsZSAuICBdXG5EIC0tPnxVcGxvYWR8IEVbR2l0SHViIGZhOmZhLWdpdGh1YiAuXVxuRCAtLT4gIHxoeWRyYXRlZF90d2VldHMucHl8IEZcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJuZXV0cmFsIn0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
 
-# Usage
+# Usage and Examples
 
 First step is to clone the repository: 
 `$ git clone https://github.com/Huertas97/tweets_collection.git`
