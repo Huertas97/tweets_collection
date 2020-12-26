@@ -212,3 +212,42 @@ Example:
     $ python dehydrate_tweets.py --tweets_path tweets/ --output_name dehydrated_output
 ```
 
+For uploading to MongoDB hydrated JSON files use `upload_mongo.py`:
+
+```
+python upload_mongo.py --help
+
+Information:
+    This scripts uploads JSON files from hydrated tweets to a MongoDB collection.
+    The user should have a MongoDB user name, password, database and collection to
+    upload the hydrated data. A filter option si available in case the user only want 
+    to upload data from Fact-checkers. 
+
+Usage: 
+     python upload_mongo.py  [options]
+
+Options:
+    -p, --path                   Path were the JSON file to upload are located
+    -f  --filter                 Apply filter to upload only Fact-checkers tweets
+    -h  --help                   Show help documentation
+    --mongo_user                 MongoDB user
+    --mongo_pass                 MongoDB password
+    --mongo_dbname               MongoDB databse name
+    --mongo_collection           MongoDB collection name
+
+
+Example. 
+
+Upload to MongoDB files only from fact-checkers
+    $ python upload_mongo.py --filter --mongo_user Huertas97 --mongo_pass XXX \
+        --mongo_dbname fact-check-tweet-collection --mongo_collection tweets \
+        --path ..\local_tweets\ 
+
+Upload to MongoDB files (no filters)
+    $ python upload_mongo.py --mongo_user Huertas97 --mongo_pass XXX \
+        --mongo_dbname fact-check-tweet-collection --mongo_collection tweets \
+        --path ..\local_tweets\      
+
+```
+
+
