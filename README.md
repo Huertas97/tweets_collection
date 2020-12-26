@@ -47,6 +47,7 @@ Once downloaded, if you try to use the program it will most likely not work sinc
 !pip install -U -q emoji
 !pip install -U PyGithub
 !pip install -U -q tqdm
+!pip install -U -q pymongo
 ```
 
 Likewise, the program's help can be accessed with the command:
@@ -56,23 +57,31 @@ Output:
 ```
 Information:
     This script allows the user to collects dehydrated and hydrated tweets from
-    Twitter accounts.The default Twitter accounts were selected by hand.
-    Feel free for change the ones selected in this script. Tweets extractions is
+    Twitter accounts. The user has several options to save the data extracted: 
+    locally, on GitHub, on MongoDB. To save locally use --save_local and --local_path
+    commands. To save on GitHub use --git_token and --git_repo commands. To save
+    the data on MongoDB use --mongo_user, --mongo_pass, --mongo_dbname, --mongo_collection.
+    
+    
+    The default Twitter accounts were selected by hand. 
+    Feel free to change the ones selected in this script. Tweets extractions is
     accomplish using Tweepy. Hydrated tweets are saved locally. Dehydrated tweets
-    are the ones uploaded to GitHub.
-
+    are the ones uploaded to GitHub. Nevertheless, the user decides if tweets
+    should be saved locally (and the path desired) or saved on GitHub (and the
+    repository desired). 
+    
     Be aware of the "Rate Limits" from Twitter. Among these limits, the number of
-    tweet extraction requests is up to 450 in a temporal window of 15 minutes.
+    tweet extraction requests is up to 450 in a temporal window of 15 minutes. 
     Once the temporal windows ends, the number of requests are restarted.
     Nevertheless, the code has been developed to manage and inform about these
-    temporal windows and to continue the tweets extraction.
-
-    Morevoer, you should be aware that Twitter Policy only allows to extract
-    tweets within the las 7 days (30 days for Premium API).
+    temporal windows and to continue the tweets extraction. 
+    
+    Moreover, you should be aware that Twitter Policy only allows to extract 
+    tweets within the las 7 days (30 days for Premium API).  
 
     The tweets collected are saved as json files. The Twitter accounts without
     tweets available for the date selected do not create json files. The information
-    saved in the json files are the following ones:
+    saved in the json files are the following ones: 
         - account name
         - tweet id
         - full text (both tweet and retweet)
@@ -81,16 +90,16 @@ Information:
         - nº of times retweeted
         - favourites count
         - tweet location (if available)
-        - account url
+        - account url 
         - tweet entities (url, hastags, etc)
 
-Usage:
+Usage: 
     python Tweet_wrapper_v2.py [options]
 
 Options:
     -t, --today                  Collect tweets from today
     -d, --day                    Number of days to go back in time to collect tweets. Ex: 1 = yesterday.
-    -c, --count                  Number of tweets collected per user. Directly related with computing time. Default: 200
+    -c, --count                  Number of tweets collected per user. Directly related with computing time. Default: 200 
     --git_token                  Token needed to access the Github repository where the results will be saved
     --git_repo                   Repository where you want to save the json file generated after tweet extraction
     --tweets_source_info         Information. Show the Twitter accounts used for the tweets extraction
@@ -98,22 +107,45 @@ Options:
     --git_autor_email            E-mail author
     --api_key                    CONSUMER_KEY
     --api_secret_key             CONSUMER_SECRET
-    --access_token               ACCESS TOKEN
+    --access_token               ACCESS TOKEN   
     --access_token_secret        ACCESS TOKEN SECRET
-
+    --save_local                 Bool. If data should be save locally
+    --local_path                 Path to save data locally. Default: "../local_tweets/"
+    --mongo_user                 MongoDB user
+    --mongo_pass                 MongoDB password
+    --mongo_dbname               MongoDB databse name
+    --mongo_collection           MongoDB collection name
+    
 Requirements:
      -> tweepy             (pip install -U -q tweepy)
      -> emoji              (pip install -U -q emoji)
      -> github             (pip install -U -q PyGithub)
      -> tqdm               (pip install -U -q tqdm)
      -> requests_oauthlib  (pip install -U -q requests-oauthlib)
-
+     
      Furthermore, you should have a GitHub account and a Twitter Developer API
-     credentials.
+     credentials. 
 
-Example. Collect up to 1000 tweets from today:
-    $ python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection \
-        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX
+Example. 
+
+Collect up to 100 tweets from today, save them locally and on GitHub:
+    $ python Tweet_wrapper_v2.py -t -c 100 \
+        --save_local --local_path "../local_tweets" \
+        --git_token XXX --git_repo Huertas97/tweets_collection \
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret 
+        
+Collect up to 200 tweets from yesterday, save them locally (not GitHub): 
+    $ python Tweet_wrapper_v2.py -d 1 -c 200 \
+        --save_local --local_path "../local_tweets" \
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret  
+
+Collect up to 40 tweets from 4 days ago, save them locally and on MongoDB (not GitHub): 
+    $ python Tweet_wrapper_v2.py -d 4 -c 40 \
+        --save_local --local_path "../local_tweets" \
+        --mongo_user Huertas97 --mongo_pass XXX  \
+        --mongo_dbname fact-check-tweet-collection \
+        --mongo_collection tweets
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret
 ```
     
 Also, you can consult the Twitter accounts used by:
