@@ -132,12 +132,12 @@ Collect up to 100 tweets from today, save them locally and on GitHub:
     $ python Tweet_wrapper_v2.py -t -c 100 \
         --save_local --local_path "../local_tweets" \
         --git_token XXX --git_repo Huertas97/tweets_collection \
-        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret 
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX
         
 Collect up to 200 tweets from yesterday, save them locally (not GitHub): 
     $ python Tweet_wrapper_v2.py -d 1 -c 200 \
         --save_local --local_path "../local_tweets" \
-        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret  
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret  XXX
 
 Collect up to 40 tweets from 4 days ago, save them locally and on MongoDB (not GitHub): 
     $ python Tweet_wrapper_v2.py -d 4 -c 40 \
@@ -145,7 +145,7 @@ Collect up to 40 tweets from 4 days ago, save them locally and on MongoDB (not G
         --mongo_user Huertas97 --mongo_pass XXX  \
         --mongo_dbname fact-check-tweet-collection \
         --mongo_collection tweets
-        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX
 ```
     
 Also, you can consult the Twitter accounts used by:
