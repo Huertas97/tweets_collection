@@ -1,0 +1,6 @@
+pymongo==3.11.2
+tweepy==3.9.0
+emoji==0.6.0
+PyGithub
+tqdm==4.47.0
+requests-oauthlib==1.3.0
