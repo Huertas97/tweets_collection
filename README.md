@@ -41,15 +41,7 @@ First step is to clone the repository:
 `$ git clone https://github.com/Huertas97/tweets_collection.git`
 
 Or download only the file Tweet_wrapper_v2.py if you want to extract only tweets. The accounts used for extracting the tweets can be modified in this code. 
-Once downloaded, if you try to use the program it will most likely not work since a number of specific libraries are required. The program notifies which are these libraries. However, for clarification they are shown below:
-
-```
-!pip install -U -q tweepy
-!pip install -U -q emoji
-!pip install -U PyGithub
-!pip install -U -q tqdm
-!pip install -U -q pymongo
-```
+Once downloaded, if you try to use the program it will most likely not work since a number of specific libraries are required. The program notifies which are these libraries. You can find these packages required in requirements.txt with the version used in this repository. 
 
 Likewise, the program's help can be accessed with the command:
 `$ python Tweet_wrapper_v2.py --help`
