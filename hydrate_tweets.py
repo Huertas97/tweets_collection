@@ -57,8 +57,8 @@ Options:
     --api_key                    CONSUMER_KEY
     --api_secret_key             CONSUMER_SECRET
     --access_token               ACCESS TOKEN   
-    --access_token_secret         ACCESS TOKEN SECRET
-    --tweets_path                Path where the tweets to dehydrate are located
+    --access_token_secret        ACCESS TOKEN SECRET
+    --tweets_path                Path where the tweets to hydrate are located
     --help                       Help documentation
 
 Example. 
