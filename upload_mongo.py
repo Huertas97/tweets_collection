@@ -11,7 +11,7 @@ MongoDB database according to the instance type. For example a free database
 (M0 instance type) has a limitation of 512 MB available for storage.
 
 
-@author: Álvaro Huertas García
+@author: Álvaro Huertas García 
 """
 
 import os
