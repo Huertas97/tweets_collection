@@ -6,8 +6,19 @@ Created on Sun Dec 20 18:40:33 2020
 
 This script allows the user to collects dehydrated and hydrated tweets from
 Twitter accounts.The default Twitter accounts were selected by hand. 
-Feel free for change the ones selected in this script. Tweets extractions is
+Feel free to change the ones selected in this script. Tweets extractions is
 accomplish using Tweepy. More information in print_usage().
+
+Requirements:
+     -> tweepy             (pip install -U -q tweepy)
+     -> emoji              (pip install -U -q emoji)
+     -> github             (pip install -U -q PyGithub)
+     -> tqdm               (pip install -U -q tqdm)
+     -> requests_oauthlib  (pip install -U -q requests-oauthlib)
+     -> pymongo            (pip install pymongo)
+     
+Furthermore, you should have a GitHub account and a Twitter Developer API 
+credentials. Contact me if you want to use our Twitter API. 
 
 @author: Álvaro Huertas García
 """
@@ -20,9 +31,10 @@ import pandas as pd
 import time
 import datetime
 import os
-import subprocess
 from optparse import OptionParser
 import sys
+import json
+from pymongo import MongoClient
 
 
 try:
@@ -40,7 +52,8 @@ except ImportError as error:
           -> emoji              (pip install -U -q emoji)
           -> github             (pip install -U -q PyGithub)
           -> tqdm               (pip install -U -q tqdm)
-          -> requests_oauthlib  (pip install -U -q requests-oauthlib)""")
+          -> requests_oauthlib  (pip install -U -q requests-oauthlib)
+          -> pymongo            (pip install pymongo)""")
     sys.exit()
     
 
@@ -61,6 +74,12 @@ parser.add_option('--api_key', type='str', help='Consumer key')
 parser.add_option('--api_secret_key', type='str', help='Consumer secret key')
 parser.add_option('--access_token', type='str', help='Access token')
 parser.add_option('--access_token_secret', type='str', help='Secret access token')
+parser.add_option('--save_local', action='store_true', help='Bool. If data should be save locally')
+parser.add_option('--local_path', type="str", default ="../local_tweets/", help='Bool. If data should be save locally')
+parser.add_option('--mongo_user', type='str', help="MongoDB user")
+parser.add_option('--mongo_pass', type='str', help="MongoDB password")
+parser.add_option('--mongo_dbname', type='str', help="MongoDB database name")
+parser.add_option('--mongo_collection', type='str', help="MongoDB collection name")
 
 (options, args) = parser.parse_args()
 
@@ -68,10 +87,18 @@ def print_usage():
     print("""
 Information:
     This script allows the user to collects dehydrated and hydrated tweets from
-    Twitter accounts.The default Twitter accounts were selected by hand. 
-    Feel free for change the ones selected in this script. Tweets extractions is
+    Twitter accounts. The user has several options to save the data extracted: 
+    locally, on GitHub, on MongoDB. To save locally use --save_local and --local_path
+    commands. To save on GitHub use --git_token and --git_repo commands. To save
+    the data on MongoDB use --mongo_user, --mongo_pass, --mongo_dbname, --mongo_collection.
+    
+    
+    The default Twitter accounts were selected by hand. 
+    Feel free to change the ones selected in this script. Tweets extractions is
     accomplish using Tweepy. Hydrated tweets are saved locally. Dehydrated tweets
-    are the ones uploaded to GitHub. 
+    are the ones uploaded to GitHub. Nevertheless, the user decides if tweets
+    should be saved locally (and the path desired) or saved on GitHub (and the
+    repository desired). 
     
     Be aware of the "Rate Limits" from Twitter. Among these limits, the number of
     tweet extraction requests is up to 450 in a temporal window of 15 minutes. 
@@ -79,7 +106,7 @@ Information:
     Nevertheless, the code has been developed to manage and inform about these
     temporal windows and to continue the tweets extraction. 
     
-    Morevoer, you should be aware that Twitter Policy only allows to extract 
+    Moreover, you should be aware that Twitter Policy only allows to extract 
     tweets within the las 7 days (30 days for Premium API).  
 
     The tweets collected are saved as json files. The Twitter accounts without
@@ -112,6 +139,12 @@ Options:
     --api_secret_key             CONSUMER_SECRET
     --access_token               ACCESS TOKEN   
     --access_token_secret        ACCESS TOKEN SECRET
+    --save_local                 Bool. If data should be save locally
+    --local_path                 Path to save data locally. Default: "../local_tweets/"
+    --mongo_user                 MongoDB user
+    --mongo_pass                 MongoDB password
+    --mongo_dbname               MongoDB databse name
+    --mongo_collection           MongoDB collection name
     
 Requirements:
      -> tweepy             (pip install -U -q tweepy)
@@ -119,27 +152,46 @@ Requirements:
      -> github             (pip install -U -q PyGithub)
      -> tqdm               (pip install -U -q tqdm)
      -> requests_oauthlib  (pip install -U -q requests-oauthlib)
+     -> pymongo            (pip install pymongo)
      
      Furthermore, you should have a GitHub account and a Twitter Developer API
      credentials. 
 
-Example. Collect up to 1000 tweets from today:
-    $ python Tweet_wrapper_v2_v2.py -t -c 100 --git_token XXX --git_repo Huertas97/tweets_collection \\
-        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret XXX""")
+Example. 
+
+Collect up to 100 tweets from today, save them locally and on GitHub:
+    $ python Tweet_wrapper_v2.py -t -c 100 \
+        --save_local --local_path "../local_tweets" \
+        --git_token XXX --git_repo Huertas97/tweets_collection \
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret 
+        
+Collect up to 200 tweets from yesterday, save them locally (not GitHub): 
+    $ python Tweet_wrapper_v2.py -d 1 -c 200 \
+        --save_local --local_path "../local_tweets" \
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret  
+
+Collect up to 40 tweets from 4 days ago, save them locally and on MongoDB (not GitHub): 
+    $ python Tweet_wrapper_v2.py -d 4 -c 40 \
+        --save_local --local_path "../local_tweets" \
+        --mongo_user Huertas97 --mongo_pass XXX  \
+        --mongo_dbname fact-check-tweet-collection \
+        --mongo_collection tweets
+        --api_key XXX --api_secret_key XXX --access_token XXX --access_token_secret
+        """)
     sys.exit()
 
 
 
 def process_time(api):
     """
-    Función encargada de extraer el nº de request restantes permitidas por
-    la API de Twitter. También indica cuando se renueva la ventana temporal
-    para continuar la extracción de tweets.
+    Function in charge of extracting the remaining number of requests allowed by
+    the Twitter API. It also indicates when the time window is renewed
+    to continue the tweet extraction.
 
     Parameters
     ----------
     api : API object
-        sesión de la API
+        API session
 
     Returns
     -------
@@ -148,10 +200,10 @@ def process_time(api):
     """
     # Get the number of remaining requests
     remaining = int(api.last_response.headers['x-rate-limit-remaining'])
-    print("Requests restantes:", remaining)
+    print("Remaining requests:", remaining)
     reset = int(api.last_response.headers['x-rate-limit-reset'])
     reset = datetime.datetime.fromtimestamp(reset)
-    print("La ventana temporal se resetea a ", reset)
+    print("Requests reset at: ", reset)
 
 def tweet_collect(user_name, text_query, since_date,  count, language, result_type):
     """
@@ -549,8 +601,80 @@ dic_user = {
 
 # Feel free to modify the Twitter accounts showed above
 # dic_user = {
-#     "US_FDA": ["en", "from:"]       
+#     # "US_FDA": ["en", "from:"]     
+#     "el_pais": ["es", "from:"],
+#     "EFEnoticias":  ["es", "from:"],
+#     "abc_es": ["es", "from:"],
+#     "telediario_tve": ["es", "from:"],
+#     "24h_tve": ["es", "from:"],
+#     "franceinfo": ["fr", "from:"]
 #     }
+
+
+# Only Fact--checker Twitter accounts will be saved on MongoDB
+checked_users = ['malditobulo',
+                'maldita_ciencia',
+                'EFEVerifica',
+                'Chequeado',
+                'Newtral',
+                'FullFact',
+                'ElSabuesoAP',
+                'cotejoinfo',
+                'ECUADORCHEQUEA',
+                'lasillavacia',
+                'AP',
+                'AfricaCheck',
+                'aosfatos',
+                'AAPNewswire',
+                'boomlive_in',
+                'correctiv_org',
+                'Check_Your_Fact',
+                'CheckCongo',
+                'DemagogPL',
+                'dubawaNG',
+                'estadaoverifica',
+                'FactlyIndia',
+                'FactCrescendo',
+                'FactCheckNI',
+                'ghana_fact',
+                'Fatabyyano_com',
+                'FerretScot',
+                'Observateurs',
+                'lemondefr',
+                'CheckNewsfr',
+                'LogicallyAI',
+                'MaharatNews',
+                'Poynter',
+                'mediawise',
+                'NewsMobileIndia',
+                'NewsMeter_In',
+                'observadorpt',
+                'PesaCheck',
+                'JornalPoligrafo',
+                'ABCFactCheck',
+                'rapplerdotcom',
+                'ReutersAgency',
+                'ClimateFdbk',
+                'eye_digit',
+                'SouthAsiaCheck',
+                'StopFakingNews',
+                'IndiaToday',
+                'factchecknet',
+                'thedispatch',
+                'ThipMedia',
+                'TheQuint',
+                'GlennKesslerWP',
+                'thejournal_ie',
+                'USATODAY',
+                'verafiles',
+                'newsvishvas',
+                'dpa',
+                'dogrulukpayicom',
+                'PagellaPolitica',
+                'teyitorg',
+                'NUnl',
+                'snopes',
+                'franceinfo']
 
 def print_tweets_source_info(dic_user):
     print("""Twitter accounts used by default:""")
@@ -564,7 +688,7 @@ if options.tweets_source_info:
 if not all([options.api_key, options.api_secret_key,
             options.access_token, options.access_token_secret
             ]) or options.help:
-    print_usage()    
+    print_usage() 
     
 if options.today: #  and not options.yesterday: 
     # Create date starting from 00:00h
@@ -582,45 +706,60 @@ if not options.count:
     
 
 
-# CREDENTIALS
+# CREDENTIALS for Twitter API   
 api_key = options.api_key
 api_secret_key = options.api_secret_key
 access_token = options.access_token
 access_token_secret = options.access_token_secret
 
 
+# GitHub option
 if options.git_token and options.git_repo:
     g = Github(options.git_token)
     repo = g.get_repo(options.git_repo)
-else:
-    print("\nImportant: A GitHub repository and access token are required")
-    print_usage()
+    print("----------- Saving tweets on GitHub: {}-----------".format(repo)) 
     
-if options.git_autor:
-    autor = options.git_autor
-else:
-    autor = "Huertas97"
+    if options.git_autor:
+        autor = options.git_autor
+    else:
+        autor = "Huertas97"
 
-if options.git_autor_email:
-    email = options.git_autor_email
-else:
-    email = "ahuertasg01@gmail.com"
+    if options.git_autor_email:
+        email = options.git_autor_email
+    else:
+        email = "ahuertasg01@gmail.com"
+
+else: 
+    print("----------- Tweets will not be stored on GitHub -----------")    
     
 
+# Local option
+if options.save_local:
+    print("----------- Saving tweets locally on: {} -----------".format(options.local_path)) 
+else: 
+    print("----------- Tweets will not be stored locally -----------")  
 
 
+# Save in MongoDB
+if all([options.mongo_user, options.mongo_pass, options.mongo_dbname,
+                options.mongo_collection]):
+    print("----------- Saving tweets on MongoDB. db: {}, collection: {} -----------".format(options.mongo_dbname,
+                                                                                            options.mongo_collection)) 
+else: 
+    print("----------- Tweets will not be stored on MongoDB-----------")  
 
-
-# STARTING API
+# STARTING Twitter API
 twitter = OAuth1Session(api_key,
                         client_secret=api_secret_key,
                         resource_owner_key=access_token,
                         resource_owner_secret=access_token_secret)
 
+## Access to the App per user 
 # OAuth 1a (application-user). Rate limit: 180 requests in 15 min window
 # auth = tweepy.OAuthHandler(api_key, api_secret_key)
 # auth.set_access_token(access_token, access_token_secret)
 
+## Access to the App directly (more amount of requests available)
 # OAuth 2 (application-only). Rate limit: 450 requets in 15 min window
 auth = tweepy.AppAuthHandler(api_key, api_secret_key)
 
@@ -635,6 +774,18 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 # today = datetime.date.today()
 date = since_date.date()
 print(date)
+
+
+
+
+def json2dic(file_name, root):
+    file_path = os.path.join(root, file_name)
+    with open(file_path) as f:
+        data = json.load(f)
+    return data
+
+
+
 
 for key, value in tqdm(dic_user.items(), desc="Progess"):
     user_name = key
@@ -651,30 +802,68 @@ for key, value in tqdm(dic_user.items(), desc="Progess"):
                               result_type = result_type,
                               since_date=since_date
                               )
+    
+    
+    
     # If a df is returned push it
     if isinstance(tweets_df, pd.DataFrame):
-        local_file_name = user_name+"-"+str(date)+".json"
-        git_file_name = user_name+"-"+str(date)+".txt"
-        
-        # Pandas df to json format
-        tweets_df.to_json(local_file_name)
-        # Extract tweets_id and save it as txt
-        tweets_df["tweet_id"].to_csv(git_file_name, header=None, index=None, sep=' ', mode='w')
-        
-        # create folders and move json file to that folder by date
-        subprocess.call(['mkdir',"-p", "./tweets/" + str(date)])
-        subprocess.call(['mv',  git_file_name,  './tweets/'+ str(date)])
-        
-        subprocess.call(['mkdir',"-p", "../local_tweets/" + str(date)])
-        subprocess.call(['mv',  local_file_name,  '../local_tweets/'+ str(date)])
         
         
-        # Create path to reach the file to push
-        path = os.path.join(".", "tweets", str(date), str(git_file_name)).replace("\\","/") 
+        # Save locally
+        if options.save_local:
+            # create folders and move json file to that folder by date
+            local_folder = os.path.join(options.local_path, str(date))
+            os.makedirs(local_folder, exist_ok=True)
+            local_file_name = user_name+"-"+str(date)+".json"
         
-        # GitHub will only receive tweets ids (Twitter Privacy Conditions)
-        # Extract the content to push
-        file_content = open(path, "r").read()
-        push(path = path, message = "Tweets from: " + str(date), content = file_content,
-             author = autor, author_mail = email)
+            # Pandas df to json format
+            tweets_df.to_json(os.path.join(local_folder, local_file_name))
+        
+        
+
+        # Save on GitHub
+        if options.git_token and options.git_repo:
+            # create folders and move json file to that folder by date
+            os.makedirs(os.path.join("./tweets", str(date)), exist_ok=True)
+            git_file_name = user_name+"-"+str(date)+".txt"
+            git_file_path = os.path.join("./tweets", str(date), git_file_name)
+            
+            # Extract tweets_id and save it as txt
+            tweets_df["tweet_id"].to_csv(git_file_path, header=None, index=None, sep=' ', mode='w')
+
+            # GitHub will only receive tweets ids (Twitter Privacy Conditions)
+            # Extract the content to push
+            file_content = open(git_file_path.replace("\\","/") , "r").read()
+            push(path = git_file_path.replace("\\","/"), message = "Tweets from: " + str(date), content = file_content,
+                 author = autor, author_mail = email)
+            
+        # Save on MongoDB
+        if all([options.mongo_user, options.mongo_pass, options.mongo_dbname,
+                options.mongo_collection]):
+            mongo_file_name = user_name+"-"+str(date)+".json"
+
+            mongo_user = options.mongo_user
+            mongo_pass = options.mongo_pass
+            mongo_dbname = options.mongo_dbname
+            mongo_collection = options.mongo_collection
+            client = MongoClient("mongodb+srv://" + mongo_user + ":" +
+                             mongo_pass + "@fact-check-tweet-collec.oaort.mongodb.net/" + 
+                             mongo_dbname + "?retryWrites=true&w=majority")
+            db = client[mongo_dbname]  # ["fact-check-tweet-collection"]
+            collection = db[mongo_collection]
+            
+            
+            # Check and delete if file already exists in MongoDB collection 
+            creation_date =  tweets_df.created_at.to_list()[0]
+            collection.find_one_and_delete({ "screen_name.0": user_name, "created_at.0": str(creation_date) })
+            # print(tweets_df.head())
+        
+            if mongo_file_name.split("-")[0] in checked_users: 
+                json_file = tweets_df.to_json()
+                mongo_file_content = json.loads(json_file)
+                collection.insert_one(mongo_file_content)
+            
+        
+        
+        
     
